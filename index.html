@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sunny Stores Management System</title>
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --bg-card: #1e293b;
+      --bg-subtle: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-blue: #38bdf8;
+      --accent-amber: #f59e0b;
+      --border-color: #334155;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Bar */
+    header {
+      background-color: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: 0.5px;
+    }
+
+    .sync-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+    }
+
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--accent-amber);
+    }
+    .sync-dot.synced { background-color: var(--accent-green); }
+    .sync-dot.syncing { background-color: var(--accent-blue); animation: pulse 1s infinite; }
+    .sync-dot.offline { background-color: var(--accent-red); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Navigation Tabs */
+    .tab-bar {
+      display: flex;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      color: var(--accent-blue);
+      border-bottom-color: var(--accent-blue);
+    }
+
+    /* Content Area */
+    main {
+      flex: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .panel {
+      display: none;
+    }
+    .panel.active {
+      display: block;
+    }
+
+    /* Quick Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .stat-value.green { color: var(--accent-green); }
+    .stat-value.red { color: var(--accent-red); }
+    .stat-value.blue { color: var(--accent-blue); }
+
+    /* Form Card */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent-blue);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 11px;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn:active {
+      opacity: 0.8;
+    }
+
+    .btn-primary { background: var(--accent-blue); color: #0b1120; }
+    .btn-green { background: var(--accent-green); color: #0b1120; }
+    .btn-red { background: var(--accent-red); color: #ffffff; }
+
+    /* Checkbox & Switch */
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 10px 0;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent-blue);
+    }
+
+    /* List & Items */
+    .search-box {
+      margin-bottom: 12px;
+    }
+
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .list-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-primary {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-secondary {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .action-icon-btn {
+      background: var(--bg-subtle);
+      border: none;
+      color: var(--text-main);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .action-icon-btn.wa { background: #065f46; color: #6ee7b7; }
+    .action-icon-btn.sms { background: #1e3a8a; color: #93c5fd; }
+    .action-icon-btn.del { background: #450a0a; color: #fca5a5; }
+
+    /* Settings section */
+    .sec-notice {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-title">SUNNY STORES</div>
+    <div class="sync-badge" id="syncStatusBadge">
+      <span class="sync-dot" id="syncDot"></span>
+      <span id="syncText">Local Only</span>
+    </div>
+  </header>
+
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('khata')">📒 Hisaab Kitaab</button>
+    <button class="tab-btn" onclick="switchTab('maal')">📦 Maal Inward</button>
+    <button class="tab-btn" onclick="switchTab('settings')">⚙️ Security & Sync</button>
+  </nav>
+
+  <main>
+    <!-- TAB 1: HISAAB KITAAB -->
+    <section id="khataPanel" class="panel active">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Udhar (Given)</div>
+          <div class="stat-value red" id="statTotalUdhar">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Jama (Received)</div>
+          <div class="stat-value green" id="statTotalJama">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Net Balance (Baki)</div>
+          <div class="stat-value blue" id="statNetKhata">₹0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">New Entry (Grahak Hisaab)</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Customer Name *</label>
+            <input type="text" id="custName" placeholder="e.g. Ramesh Bhai" />
+          </div>
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="tel" id="custPhone" placeholder="10 digit mobile" maxlength="10" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Amount (₹) *</label>
+            <input type="number" id="custAmount" placeholder="Amount" />
+          </div>
+          <div class="form-group">
+            <label>Transaction Type *</label>
+            <select id="custType">
+              <option value="UDHAR">GIVEN (Udhar / Diya)</option>
+              <option value="JAMA">RECEIVED (Jama / Aaya)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Remarks / Item Detail (Optional)</label>
+          <input type="text" id="custRemarks" placeholder="e.g. 2 Packet Goods" />
+        </div>
+
+        <!-- Default Checkbox OFF for auto-notification -->
+        <label class="checkbox-row">
+          <input type="checkbox" id="directNotifyCheck" />
+          <span>Open WhatsApp / SMS after saving this entry</span>
+        </label>
+
+        <button class="btn btn-primary" onclick="addKhataEntry()">💾 Save Entry</button>
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="khataSearch" placeholder="🔍 Search Customer or Mobile..." oninput="renderKhataList()" />
+      </div>
+
+      <div class="item-list" id="khataListContainer">
+        <!-- Dynamic list -->
+      </div>
+    </section>
+
+    <!-- TAB 2: MAAL INWARD -->
+    <section id="maalPanel" class="panel">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Maal Inward (Cost)</div>
+          <div class="stat-value blue" id="statTotalStock">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Shipments In</div>
+          <div class="stat-value green" id="statStockCount">0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">New Maal Aawam (Stock Inward)</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kya Maal Aaya (Items / Details) *</label>
+            <input type="text" id="maalItem" placeholder="e.g. Soap 5 Box, Oil 10 Ctn" />
+          </div>
+          <div class="form-group">
+            <label>Kitne Ka Aaya (Total ₹) *</label>
+            <input type="number" id="maalAmount" placeholder="Amount ₹" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kisse Aaya (Supplier / Party) *</label>
+            <input type="text" id="maalSupplier" placeholder="e.g. Nagpur Wholesalers" />
+          </div>
+          <div class="form-group">
+            <label>Kab Aaya (Date & Time) *</label>
+            <input type="datetime-local" id="maalDateTime" />
+          </div>
+        </div>
+
+        <button class="btn btn-green" onclick="addMaalEntry()">📦 Save Maal Entry</button>
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="maalSearch" placeholder="🔍 Search Maal, Supplier, or Date..." oninput="renderMaalList()" />
+      </div>
+
+      <div class="item-list" id="maalListContainer">
+        <!-- Dynamic list -->
+      </div>
+    </section>
+
+    <!-- TAB 3: SECURITY & SYNC SETTINGS -->
+    <section id="settingsPanel" class="panel">
+      <div class="card">
+        <div class="card-title">🔐 Master Security Access</div>
+        <p class="sec-notice" style="margin-bottom: 12px;">
+          Enter the Master Passphrase to configure GitHub fast live-sync credentials.
+        </p>
+        
+        <div class="form-group">
+          <label>Master Passphrase</label>
+          <input type="password" id="passphraseInput" placeholder="Enter Master Passphrase" />
+        </div>
+        <button class="btn btn-primary" onclick="verifyMasterPassphrase()">Unlock Sync Settings</button>
+      </div>
+
+      <div class="card" id="tokenConfigBox" style="display: none;">
+        <div class="card-title">⚡ GitHub Fast Live Sync</div>
+        
+        <div class="form-group">
+          <label>Repository (Hardcoded)</label>
+          <input type="text" value="TechsInMyDNA / SUNNY-STORES-MANAGEMENT-SYSTEM" disabled style="opacity: 0.75;" />
+        </div>
+
+        <div class="form-group">
+          <label>GitHub Personal Access Token (PAT)</label>
+          <input type="password" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+          <p class="sec-notice">Token requires repository read & write scope for <code>data.json</code>.</p>
+        </div>
+
+        <div class="form-row">
+          <button class="btn btn-green" onclick="saveGitHubToken()">Apply & Sync Now</button>
+          <button class="btn btn-red" onclick="removeGitHubToken()">Disconnect</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">💾 Backup & Manual Data Export</div>
+        <p class="sec-notice" style="margin-bottom: 12px;">Local copy is always safe in your browser storage.</p>
+        <button class="btn btn-primary" onclick="exportDataJson()">Download data.json Backup</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // HARDCODED REPO CONFIGURATION
+    const GH_OWNER = "TechsInMyDNA";
+    const GH_REPO = "SUNNY-STORES-MANAGEMENT-SYSTEM";
+    const GH_FILE = "data.json";
+
+    // Application State
+    let appData = {
+      khata: [],
+      maal: [],
+      lastUpdated: new Date().toISOString()
+    };
+
+    let ghSha = null;
+    let isSyncing = false;
+
+    // Obfuscated Security Check (Never exposed directly)
+    function checkPassphrase(str) {
+      const codeSeq = [83,117,110,110,121,83,116,111,114,101,115,64,49,52,52];
+      if (str.length !== codeSeq.length) return false;
+      for (let i = 0; i < codeSeq.length; i++) {
+        if (str.charCodeAt(i) !== codeSeq[i]) return false;
+      }
+      return true;
+    }
+
+    // Init App
+    window.addEventListener("DOMContentLoaded", () => {
+      // Set current datetime for Maal input
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      document.getElementById("maalDateTime").value = now.toISOString().slice(0, 16);
+
+      // Load Local Storage first
+      loadLocal();
+      renderAll();
+
+      // Check if GitHub token is present
+      const token = localStorage.getItem("ss_gh_token");
+      if (token) {
+        syncFromGitHub();
+      } else {
+        updateSyncBadge("local", "Local Only");
+      }
+
+      // Online listener
+      window.addEventListener("online", () => {
+        if (localStorage.getItem("ss_gh_token")) syncToGitHub();
+      });
+    });
+
+    // Tab Navigation
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+
+      if (tabId === "khata") {
+        document.querySelector(".tab-btn:nth-child(1)").classList.add("active");
+        document.getElementById("khataPanel").classList.add("active");
+      } else if (tabId === "maal") {
+        document.querySelector(".tab-btn:nth-child(2)").classList.add("active");
+        document.getElementById("maalPanel").classList.add("active");
+      } else if (tabId === "settings") {
+        document.querySelector(".tab-btn:nth-child(3)").classList.add("active");
+        document.getElementById("settingsPanel").classList.add("active");
+      }
+    }
+
+    // Master Passphrase Handler
+    function verifyMasterPassphrase() {
+      const pass = document.getElementById("passphraseInput").value.trim();
+      if (checkPassphrase(pass)) {
+        document.getElementById("tokenConfigBox").style.display = "block";
+        const savedToken = localStorage.getItem("ss_gh_token");
+        if (savedToken) document.getElementById("ghTokenInput").value = savedToken;
+        document.getElementById("passphraseInput").value = "";
+        alert("Access Granted: GitHub Sync Settings Unlocked.");
+      } else {
+        alert("Invalid Master Passphrase!");
+      }
+    }
+
+    function saveGitHubToken() {
+      const token = document.getElementById("ghTokenInput").value.trim();
+      if (!token) {
+        alert("Please enter a valid token.");
+        return;
+      }
+      localStorage.setItem("ss_gh_token", token);
+      alert("Token Saved! Starting live sync...");
+      syncFromGitHub();
+    }
+
+    function removeGitHubToken() {
+      if (confirm("Disconnect GitHub Sync? Data will remain stored locally.")) {
+        localStorage.removeItem("ss_gh_token");
+        document.getElementById("ghTokenInput").value = "";
+        document.getElementById("tokenConfigBox").style.display = "none";
+        updateSyncBadge("local", "Local Only");
+      }
+    }
+
+    // Local Data Operations
+    function saveLocal() {
+      appData.lastUpdated = new Date().toISOString();
+      localStorage.setItem("ss_data", JSON.stringify(appData));
+      renderAll();
+      triggerAutoSync();
+    }
+
+    function loadLocal() {
+      const local = localStorage.getItem("ss_data");
+      if (local) {
+        try {
+          appData = JSON.parse(local);
+        } catch (e) {
+          console.error("Local parse error", e);
+        }
+      }
+    }
+
+    // GitHub Live Sync (No Push/Pull Button Required)
+    function triggerAutoSync() {
+      const token = localStorage.getItem("ss_gh_token");
+      if (token && navigator.onLine) {
+        syncToGitHub();
+      } else if (!navigator.onLine) {
+        updateSyncBadge("offline", "Offline (Saved Local)");
+      }
+    }
+
+    async function syncFromGitHub() {
+      const token = localStorage.getItem("ss_gh_token");
+      if (!token) return;
+
+      updateSyncBadge("syncing", "Syncing...");
+      const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+
+      try {
+        const res = await fetch(url, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Accept": "application/vnd.github.v3+json"
+          }
+        });
+
+        if (res.status === 200) {
+          const fileData = await res.json();
+          ghSha = fileData.sha;
+          const content = decodeURIComponent(escape(atob(fileData.content)));
+          const remoteJson = JSON.parse(content);
+
+          // Conflict resolution: prefer newer update
+          if (!appData.lastUpdated || new Date(remoteJson.lastUpdated) >= new Date(appData.lastUpdated)) {
+            appData = remoteJson;
+            localStorage.setItem("ss_data", JSON.stringify(appData));
+            renderAll();
+          } else {
+            // Local is newer: push to remote
+            await syncToGitHub();
+            return;
+          }
+          updateSyncBadge("synced", "⚡ Live Synced");
+        } else if (res.status === 404) {
+          // File does not exist yet; push local
+          await syncToGitHub();
+        } else {
+          updateSyncBadge("offline", "Auth Error");
+        }
+      } catch (err) {
+        console.error("Fetch error", err);
+        updateSyncBadge("offline", "Local Only");
+      }
+    }
+
+    async function syncToGitHub() {
+      const token = localStorage.getItem("ss_gh_token");
+      if (!token || isSyncing) return;
+
+      isSyncing = true;
+      updateSyncBadge("syncing", "Saving to Cloud...");
+
+      const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+      const jsonStr = JSON.stringify(appData, null, 2);
+      const encodedContent = btoa(unescape(encodeURIComponent(jsonStr)));
+
+      try {
+        // Fetch current sha if missing
+        if (!ghSha) {
+          const checkRes = await fetch(url, {
+            headers: { "Authorization": `Bearer ${token}`, "Accept": "application/vnd.github.v3+json" }
+          });
+          if (checkRes.status === 200) {
+            const current = await checkRes.json();
+            ghSha = current.sha;
+          }
+        }
+
+        const bodyPayload = {
+          message: `Update Sunny Stores Ledger [${new Date().toLocaleTimeString()}]`,
+          content: encodedContent,
+          branch: "main"
+        };
+        if (ghSha) bodyPayload.sha = ghSha;
+
+        const putRes = await fetch(url, {
+          method: "PUT",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Accept": "application/vnd.github.v3+json"
+          },
+          body: JSON.stringify(bodyPayload)
+        });
+
+        if (putRes.ok) {
+          const resData = await putRes.json();
+          ghSha = resData.content.sha;
+          updateSyncBadge("synced", "⚡ Live Synced");
+        } else {
+          updateSyncBadge("offline", "Sync Retry Pending");
+        }
+      } catch (err) {
+        console.error("Push error", err);
+        updateSyncBadge("offline", "Saved Local");
+      } finally {
+        isSyncing = false;
+      }
+    }
+
+    function updateSyncBadge(type, text) {
+      const dot = document.getElementById("syncDot");
+      const txt = document.getElementById("syncText");
+      dot.className = "sync-dot " + type;
+      txt.textContent = text;
+    }
+
+    // KHATA (Hisaab Kitaab) Handlers
+    function addKhataEntry() {
+      const name = document.getElementById("custName").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const amount = parseFloat(document.getElementById("custAmount").value);
+      const type = document.getElementById("custType").value;
+      const remarks = document.getElementById("custRemarks").value.trim();
+      const notify = document.getElementById("directNotifyCheck").checked;
+
+      if (!name || isNaN(amount) || amount <= 0) {
+        alert("Please enter customer name and a valid amount.");
+        return;
+      }
+
+      const entry = {
+        id: "KH_" + Date.now(),
+        name,
+        phone,
+        amount,
+        type,
+        remarks,
+        date: new Date().toISOString()
+      };
+
+      appData.khata.unshift(entry);
+      saveLocal();
+
+      // Reset Form
+      document.getElementById("custName").value = "";
+      document.getElementById("custPhone").value = "";
+      document.getElementById("custAmount").value = "";
+      document.getElementById("custRemarks").value = "";
+
+      if (notify && phone) {
+        sendNotification(entry, "wa");
+      }
+    }
+
+    function deleteKhataEntry(id) {
+      if (confirm("Delete this Hisaab record?")) {
+        appData.khata = appData.khata.filter(e => e.id !== id);
+        saveLocal();
+      }
+    }
+
+    // MAAL INWARD Handlers
+    function addMaalEntry() {
+      const item = document.getElementById("maalItem").value.trim();
+      const amount = parseFloat(document.getElementById("maalAmount").value);
+      const supplier = document.getElementById("maalSupplier").value.trim();
+      const dateTime = document.getElementById("maalDateTime").value;
+
+      if (!item || isNaN(amount) || !supplier || !dateTime) {
+        alert("Please fill all Maal Inward fields properly.");
+        return;
+      }
+
+      const entry = {
+        id: "ML_" + Date.now(),
+        item,
+        amount,
+        supplier,
+        dateTime: new Date(dateTime).toISOString()
+      };
+
+      appData.maal.unshift(entry);
+      saveLocal();
+
+      // Reset
+      document.getElementById("maalItem").value = "";
+      document.getElementById("maalAmount").value = "";
+      document.getElementById("maalSupplier").value = "";
+    }
+
+    function deleteMaalEntry(id) {
+      if (confirm("Delete this Maal Inward entry?")) {
+        appData.maal = appData.maal.filter(e => e.id !== id);
+        saveLocal();
+      }
+    }
+
+    // NOTIFICATIONS (WhatsApp & SMS)
+    function sendNotification(entry, channel) {
+      const typeText = entry.type === "UDHAR" ? "Baki / Udhar" : "Jama (Received)";
+      const msg = `*SUNNY STORES - Hisaab Update*\nNamaste ${entry.name},\nAapka record update hua hai:\n- Type: ${typeText}\n- Rakam: ₹${entry.amount}\n- Note: ${entry.remarks || 'Standard Transaction'}\n- Date: ${new Date(entry.date).toLocaleDateString()}\nDhanyawad! - Sunny Stores`;
+      
+      const cleanPhone = entry.phone ? entry.phone.replace(/[^0-9]/g, "") : "";
+      if (!cleanPhone) {
+        alert("Mobile number is not provided for this customer.");
+        return;
+      }
+
+      const phoneWithCode = cleanPhone.length === 10 ? "91" + cleanPhone : cleanPhone;
+
+      if (channel === "wa") {
+        const waUrl = `https://wa.me/${phoneWithCode}?text=${encodeURIComponent(msg)}`;
+        window.open(waUrl, "_blank");
+      } else {
+        const smsUrl = `sms:${cleanPhone}?body=${encodeURIComponent(msg)}`;
+        window.location.href = smsUrl;
+      }
+    }
+
+    // RENDER FUNCTIONS
+    function renderAll() {
+      renderKhataList();
+      renderMaalList();
+    }
+
+    function renderKhataList() {
+      const container = document.getElementById("khataListContainer");
+      const search = (document.getElementById("khataSearch").value || "").toLowerCase();
+      container.innerHTML = "";
+
+      let totalUdhar = 0;
+      let totalJama = 0;
+
+      const filtered = appData.khata.filter(e => {
+        if (e.type === "UDHAR") totalUdhar += e.amount;
+        if (e.type === "JAMA") totalJama += e.amount;
+
+        return (
+          e.name.toLowerCase().includes(search) ||
+          (e.phone && e.phone.includes(search)) ||
+          (e.remarks && e.remarks.toLowerCase().includes(search))
+        );
+      });
+
+      // Update Top Stats
+      document.getElementById("statTotalUdhar").textContent = "₹" + totalUdhar.toLocaleString();
+      document.getElementById("statTotalJama").textContent = "₹" + totalJama.toLocaleString();
+      const net = totalUdhar - totalJama;
+      const netEl = document.getElementById("statNetKhata");
+      netEl.textContent = "₹" + net.toLocaleString();
+      netEl.className = "stat-value " + (net > 0 ? "red" : "green");
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Koi hisaab record nahi mila.</div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const dateStr = new Date(item.date).toLocaleDateString("en-IN", { day: 'numeric', month: 'short', year: 'numeric' });
+        const isUdhar = item.type === "UDHAR";
+
+        const div = document.createElement("div");
+        div.className = "list-item";
+        div.innerHTML = `
+          <div class="item-info">
+            <div class="item-primary">${item.name} <span style="font-size:0.75rem; color:${isUdhar ? 'var(--accent-red)' : 'var(--accent-green)'}">● ${item.type}</span></div>
+            <div class="item-secondary">${item.phone ? '📞 ' + item.phone + ' | ' : ''}₹${item.amount.toLocaleString()} ${item.remarks ? '| ' + item.remarks : ''} (${dateStr})</div>
+          </div>
+          <div class="item-actions">
+            ${item.phone ? `
+              <button class="action-icon-btn wa" title="WhatsApp" onclick='sendNotification(${JSON.stringify(item)}, "wa")'>WA</button>
+              <button class="action-icon-btn sms" title="SMS" onclick='sendNotification(${JSON.stringify(item)}, "sms")'>SMS</button>
+            ` : ''}
+            <button class="action-icon-btn del" title="Delete" onclick="deleteKhataEntry('${item.id}')">✕</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderMaalList() {
+      const container = document.getElementById("maalListContainer");
+      const search = (document.getElementById("maalSearch").value || "").toLowerCase();
+      container.innerHTML = "";
+
+      let totalStockCost = 0;
+      const filtered = appData.maal.filter(e => {
+        totalStockCost += e.amount;
+        return (
+          e.item.toLowerCase().includes(search) ||
+          e.supplier.toLowerCase().includes(search)
+        );
+      });
+
+      document.getElementById("statTotalStock").textContent = "₹" + totalStockCost.toLocaleString();
+      document.getElementById("statStockCount").textContent = appData.maal.length;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Koi Maal record nahi mila.</div>`;
+        return;
+      }
+
+      filtered.forEach(entry => {
+        const dt = new Date(entry.dateTime);
+        const dateStr = dt.toLocaleDateString("en-IN", { day: 'numeric', month: 'short' }) + " " + dt.toLocaleTimeString("en-IN", { hour: '2-digit', minute: '2-digit' });
+
+        const div = document.createElement("div");
+        div.className = "list-item";
+        div.innerHTML = `
+          <div class="item-info">
+            <div class="item-primary">${entry.item}</div>
+            <div class="item-secondary">Kisse: <strong>${entry.supplier}</strong> | Kab: ${dateStr}</div>
+          </div>
+          <div style="font-weight:700; font-size:0.95rem; color:var(--accent-blue); margin-right:8px;">
+            ₹${entry.amount.toLocaleString()}
+          </div>
+          <div class="item-actions">
+            <button class="action-icon-btn del" title="Delete" onclick="deleteMaalEntry('${entry.id}')">✕</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Manual Backup
+    function exportDataJson() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `sunny_stores_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+  </script>
+</body>
+</html>
