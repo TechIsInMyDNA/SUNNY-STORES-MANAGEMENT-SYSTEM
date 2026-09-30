@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Sunny Stores - OkCredit Ledger & Inbuilt Calculator</title>
+  <title>Sunny Stores - OkCredit Ledger</title>
   <style>
     :root {
       --bg-base: #0b131f;
@@ -112,7 +112,7 @@
       flex: 1;
       padding: 12px 6px;
       text-align: center;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 600;
       color: var(--text-sub);
       background: none;
@@ -132,7 +132,7 @@
       max-width: 680px;
       width: 100%;
       margin: 0 auto;
-      padding: 12px 14px 80px 14px;
+      padding: 12px 14px 90px 14px;
     }
 
     .view-panel { display: none; }
@@ -214,7 +214,7 @@
       white-space: nowrap;
     }
 
-    /* Feed List */
+    /* Customer Feed List */
     .feed-list {
       display: flex;
       flex-direction: column;
@@ -287,7 +287,7 @@
       margin-top: 2px;
     }
 
-    /* Customer Ledger */
+    /* Customer Profile Ledger Screen */
     .profile-header-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
@@ -463,15 +463,15 @@
       border-top-right-radius: 16px;
       width: 100%;
       max-width: 680px;
-      padding: 20px 18px 28px 18px;
-      max-height: 90vh;
+      padding: 16px 16px 24px 16px;
+      max-height: 94vh;
       overflow-y: auto;
     }
 
     .sheet-title {
       font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -481,24 +481,19 @@
       background: none;
       border: none;
       color: var(--text-sub);
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       cursor: pointer;
     }
 
-    .form-group { margin-bottom: 12px; }
+    .form-group { margin-bottom: 10px; }
 
     label {
       display: block;
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       color: var(--text-sub);
-      margin-bottom: 5px;
+      margin-bottom: 4px;
       text-transform: uppercase;
       font-weight: 600;
-    }
-
-    .input-with-calc {
-      display: flex;
-      gap: 6px;
     }
 
     input, select, textarea {
@@ -506,32 +501,18 @@
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: 8px;
-      padding: 11px 12px;
+      padding: 10px 12px;
       font-size: 0.95rem;
       color: var(--text-main);
       outline: none;
     }
     input:focus, select:focus { border-color: var(--ok-blue); }
 
-    .btn-calc-trigger {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      color: var(--ok-blue);
-      font-size: 1.15rem;
-      padding: 0 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
     .check-row {
       display: flex;
       gap: 16px;
-      margin: 14px 0;
-      padding: 10px 12px;
+      margin: 10px 0;
+      padding: 8px 12px;
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: 8px;
@@ -541,19 +522,19 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       cursor: pointer;
       color: var(--text-sub);
     }
     .check-item input[type="checkbox"] {
-      width: 17px;
-      height: 17px;
+      width: 16px;
+      height: 16px;
       accent-color: var(--ok-blue);
     }
 
     .btn-submit {
       width: 100%;
-      padding: 13px;
+      padding: 12px;
       border-radius: 8px;
       font-size: 0.95rem;
       font-weight: 700;
@@ -565,49 +546,49 @@
     .btn-submit.give { background: var(--ok-red); color: #fff; }
     .btn-submit.got { background: var(--ok-green); color: #0b131f; }
 
-    /* Calculator Component */
-    .calc-container {
+    /* =========================================
+       IN-MODAL OKCREDIT CALCULATOR DISPLAY & KEYPAD
+       ========================================= */
+    .modal-calc-display {
       background: var(--bg-input);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 12px;
-      max-width: 360px;
-      margin: 0 auto;
-    }
-
-    .calc-screen {
-      background: var(--bg-base);
-      border: 1px solid var(--border-subtle);
+      border: 1.5px solid var(--border-subtle);
       border-radius: 8px;
-      padding: 12px;
-      text-align: right;
-      margin-bottom: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .calc-expression {
-      font-size: 0.8rem;
+    .calc-expr-box {
+      font-size: 0.85rem;
       color: var(--text-sub);
-      min-height: 18px;
       overflow-x: auto;
+      max-width: 55%;
+      white-space: nowrap;
     }
 
-    .calc-result {
-      font-size: 1.6rem;
+    .calc-amt-box {
+      font-size: 1.45rem;
       font-weight: 800;
-      color: var(--ok-blue);
-      overflow-x: auto;
+      text-align: right;
+      color: var(--text-main);
     }
+    .calc-amt-box.red { color: var(--ok-red); }
+    .calc-amt-box.green { color: var(--ok-green); }
 
-    .calc-grid {
+    .modal-calc-keypad {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 6px;
+      margin-bottom: 10px;
     }
 
-    .calc-key {
-      padding: 14px;
-      border-radius: 8px;
-      font-size: 1.15rem;
+    .key-btn {
+      padding: 12px 0;
+      text-align: center;
+      border-radius: 6px;
+      font-size: 1.1rem;
       font-weight: 700;
       border: 1px solid var(--border-subtle);
       background: var(--bg-surface);
@@ -615,10 +596,10 @@
       cursor: pointer;
       user-select: none;
     }
-    .calc-key:active { background: var(--border-subtle); }
-    .calc-key.op { color: var(--ok-blue); background: var(--bg-card); }
-    .calc-key.danger { color: var(--ok-red); }
-    .calc-key.equal { background: var(--ok-green); color: #0b131f; }
+    .key-btn:active { background: var(--border-subtle); }
+    .key-btn.op { color: var(--ok-blue); background: var(--bg-card); }
+    .key-btn.danger { color: var(--ok-red); }
+    .key-btn.equal { background: var(--border-subtle); color: #fff; }
 
     /* Maal Item */
     .maal-item-card {
@@ -651,7 +632,6 @@
   <div class="nav-tabs">
     <button class="nav-tab-btn active" onclick="switchNavTab('khata')">👥 Customers</button>
     <button class="nav-tab-btn" onclick="switchNavTab('maal')">📦 Maal Inward</button>
-    <button class="nav-tab-btn" onclick="switchNavTab('calculator')">🧮 Calculator</button>
     <button class="nav-tab-btn" onclick="switchNavTab('settings')">⚙️ Settings</button>
   </div>
 
@@ -740,16 +720,7 @@
       <div id="maalListContainer"></div>
     </section>
 
-    <!-- TAB 3: STANDALONE CALCULATOR -->
-    <section id="calculatorView" class="view-panel">
-      <div class="profile-header-card" style="text-align: center;">
-        <div style="font-size:1.05rem; font-weight:700;">🧮 Sunny Stores Quick Calculator</div>
-        <div style="font-size:0.75rem; color:var(--text-sub); margin-top:2px;">Fast retail billing, discount, percentage (%) and margin calculations</div>
-      </div>
-      <div class="calc-container" id="standaloneCalcBox"></div>
-    </section>
-
-    <!-- TAB 4: SETTINGS & SYNC -->
+    <!-- TAB 3: SETTINGS & SYNC -->
     <section id="settingsView" class="view-panel">
       <div class="profile-header-card">
         <div style="font-size:1rem; font-weight:700; margin-bottom:6px;">🔐 Master Security Access</div>
@@ -805,7 +776,7 @@
     </div>
   </div>
 
-  <!-- MODAL: TRANSACTION WITH INBUILT CALCULATOR -->
+  <!-- MODAL: TRANSACTION WITH IN-BUILT OKCREDIT KEYPAD CALCULATOR -->
   <div class="modal-overlay" id="modalTx">
     <div class="modal-sheet">
       <div class="sheet-title">
@@ -815,12 +786,37 @@
       <input type="hidden" id="txModalEditId" value="" />
       <input type="hidden" id="txModalActionType" value="GIVEN" />
 
-      <div class="form-group">
-        <label>Amount (₹) * (Direct math: e.g. 1000 - 10%)</label>
-        <div class="input-with-calc">
-          <input type="text" id="txModalAmount" placeholder="0" style="font-size:1.3rem; font-weight:700;" onblur="evaluateMathInput(this)" onkeydown="if(event.key==='Enter') evaluateMathInput(this)" />
-          <button class="btn-calc-trigger" title="Open Keypad Calculator" onclick="openKeypadModal('txModalAmount')">🧮</button>
-        </div>
+      <!-- IN-BUILT CALCULATOR DISPLAY SCREEN -->
+      <div class="modal-calc-display">
+        <div class="calc-expr-box" id="txExprDisplay">0</div>
+        <div class="calc-amt-box red" id="txAmtDisplay">₹0</div>
+      </div>
+
+      <!-- IN-BUILT KEYPAD WITH PERCENTAGE (%) -->
+      <div class="modal-calc-keypad">
+        <button class="key-btn danger" onclick="pressTxKey('C')">C</button>
+        <button class="key-btn danger" onclick="pressTxKey('DEL')">⌫</button>
+        <button class="key-btn op" onclick="pressTxKey('%')">%</button>
+        <button class="key-btn op" onclick="pressTxKey('÷')">÷</button>
+
+        <button class="key-btn" onclick="pressTxKey('7')">7</button>
+        <button class="key-btn" onclick="pressTxKey('8')">8</button>
+        <button class="key-btn" onclick="pressTxKey('9')">9</button>
+        <button class="key-btn op" onclick="pressTxKey('×')">×</button>
+
+        <button class="key-btn" onclick="pressTxKey('4')">4</button>
+        <button class="key-btn" onclick="pressTxKey('5')">5</button>
+        <button class="key-btn" onclick="pressTxKey('6')">6</button>
+        <button class="key-btn op" onclick="pressTxKey('-')">-</button>
+
+        <button class="key-btn" onclick="pressTxKey('1')">1</button>
+        <button class="key-btn" onclick="pressTxKey('2')">2</button>
+        <button class="key-btn" onclick="pressTxKey('3')">3</button>
+        <button class="key-btn op" onclick="pressTxKey('+')">+</button>
+
+        <button class="key-btn" onclick="pressTxKey('0')">0</button>
+        <button class="key-btn" onclick="pressTxKey('.')">.</button>
+        <button class="key-btn equal" style="grid-column: span 2;" onclick="pressTxKey('=')">=</button>
       </div>
 
       <div class="form-group">
@@ -861,10 +857,7 @@
 
       <div class="form-group">
         <label>Kitne Ka Aaya (₹ Total) *</label>
-        <div class="input-with-calc">
-          <input type="text" id="maalModalAmount" placeholder="Amount ₹" onblur="evaluateMathInput(this)" onkeydown="if(event.key==='Enter') evaluateMathInput(this)" />
-          <button class="btn-calc-trigger" title="Open Keypad Calculator" onclick="openKeypadModal('maalModalAmount')">🧮</button>
-        </div>
+        <input type="number" id="maalModalAmount" placeholder="Amount ₹" />
       </div>
 
       <div class="form-group">
@@ -878,18 +871,6 @@
       </div>
 
       <button class="btn-submit got" id="maalModalBtn" onclick="submitMaalModal()">Save Maal Inward</button>
-    </div>
-  </div>
-
-  <!-- MODAL: NUMPAD CALCULATOR POPUP -->
-  <div class="modal-overlay" id="modalCalculatorKeypad">
-    <div class="modal-sheet" style="max-width: 400px;">
-      <div class="sheet-title">
-        <span>🧮 Calculator</span>
-        <button class="sheet-close" onclick="closeModal('modalCalculatorKeypad')">✕</button>
-      </div>
-      <div id="keypadModalContainer"></div>
-      <button class="btn-submit got" style="margin-top: 12px;" onclick="applyCalcToTargetInput()">Apply Amount</button>
     </div>
   </div>
 
@@ -910,8 +891,8 @@
     let ghSha = null;
     let isSyncing = false;
 
-    // Calculator Global State
-    let calcTargetInputId = null;
+    // Transaction Keypad State
+    let txKeypadExpr = "";
 
     // Obfuscated Security Passphrase Verification
     function verifySecret(val) {
@@ -927,7 +908,6 @@
     window.addEventListener("DOMContentLoaded", () => {
       loadFromStorage();
       renderAll();
-      buildCalculatorUI("standaloneCalcBox", false);
 
       const savedToken = localStorage.getItem("ss_gh_token");
       if (savedToken) {
@@ -954,11 +934,8 @@
         document.querySelector(".nav-tab-btn:nth-child(2)").classList.add("active");
         document.getElementById("maalView").classList.add("active");
         renderMaalList();
-      } else if (tab === "calculator") {
-        document.querySelector(".nav-tab-btn:nth-child(3)").classList.add("active");
-        document.getElementById("calculatorView").classList.add("active");
       } else if (tab === "settings") {
-        document.querySelector(".nav-tab-btn:nth-child(4)").classList.add("active");
+        document.querySelector(".nav-tab-btn:nth-child(3)").classList.add("active");
         document.getElementById("settingsView").classList.add("active");
       }
     }
@@ -1134,7 +1111,7 @@
         if (!expr) return 0;
         let str = expr.replace(/×/g, "*").replace(/÷/g, "/").replace(/\s+/g, "");
 
-        // Smart Percentage Logic for retail (e.g., 1000 - 10% => 1000 - (1000 * 0.1))
+        // Smart Retail Percentage (e.g., 1000 - 10% => 1000 - (1000 * 0.1))
         str = str.replace(/([0-9.]+)([+\-])([0-9.]+)%/g, (m, a, op, b) => {
           return `${a}${op}(${a}*${b}/100)`;
         });
@@ -1142,7 +1119,6 @@
         // Direct Multiplication Percentage (e.g., 500 * 5% => 500 * 0.05)
         str = str.replace(/([0-9.]+)%/g, "($1/100)");
 
-        // Security check: Only mathematical symbols and numbers allowed
         const sanitized = str.replace(/[^0-9+\-*/().]/g, "");
         if (!sanitized) return 0;
 
@@ -1153,92 +1129,27 @@
       }
     }
 
-    function evaluateMathInput(inputElement) {
-      const raw = inputElement.value.trim();
-      if (!raw) return;
-      const res = safeEvalMath(raw);
-      if (res !== null && !isNaN(res)) {
-        inputElement.value = res;
-      }
-    }
-
-    function buildCalculatorUI(containerId, isModal = false) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = `
-        <div class="calc-screen">
-          <div class="calc-expression" id="${containerId}_expr">0</div>
-          <div class="calc-result" id="${containerId}_res">0</div>
-        </div>
-        <div class="calc-grid">
-          <button class="calc-key danger" onclick="pressCalcKey('${containerId}', 'C')">C</button>
-          <button class="calc-key danger" onclick="pressCalcKey('${containerId}', 'DEL')">⌫</button>
-          <button class="calc-key op" onclick="pressCalcKey('${containerId}', '%')">%</button>
-          <button class="calc-key op" onclick="pressCalcKey('${containerId}', '÷')">÷</button>
-
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '7')">7</button>
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '8')">8</button>
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '9')">9</button>
-          <button class="calc-key op" onclick="pressCalcKey('${containerId}', '×')">×</button>
-
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '4')">4</button>
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '5')">5</button>
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '6')">6</button>
-          <button class="calc-key op" onclick="pressCalcKey('${containerId}', '-')">-</button>
-
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '1')">1</button>
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '2')">2</button>
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '3')">3</button>
-          <button class="calc-key op" onclick="pressCalcKey('${containerId}', '+')">+</button>
-
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '0')">0</button>
-          <button class="calc-key" onclick="pressCalcKey('${containerId}', '.')">.</button>
-          <button class="calc-key equal" style="grid-column: span 2;" onclick="pressCalcKey('${containerId}', '=')">=</button>
-        </div>
-      `;
-    }
-
-    let calcStore = {};
-
-    function pressCalcKey(cid, key) {
-      if (!calcStore[cid]) calcStore[cid] = { expr: "" };
-      let state = calcStore[cid];
-
+    // Modal Inbuilt Keypad Handler
+    function pressTxKey(key) {
       if (key === "C") {
-        state.expr = "";
+        txKeypadExpr = "";
       } else if (key === "DEL") {
-        state.expr = state.expr.slice(0, -1);
+        txKeypadExpr = txKeypadExpr.slice(0, -1);
       } else if (key === "=") {
-        const val = safeEvalMath(state.expr);
-        if (val !== null) state.expr = String(val);
+        const val = safeEvalMath(txKeypadExpr);
+        if (val !== null) txKeypadExpr = String(val);
       } else {
-        const lastChar = state.expr.slice(-1);
+        const lastChar = txKeypadExpr.slice(-1);
         if (["+", "-", "×", "÷"].includes(key) && ["+", "-", "×", "÷"].includes(lastChar)) {
-          state.expr = state.expr.slice(0, -1) + key;
+          txKeypadExpr = txKeypadExpr.slice(0, -1) + key;
         } else {
-          state.expr += key;
+          txKeypadExpr += key;
         }
       }
 
-      document.getElementById(`${cid}_expr`).textContent = state.expr || "0";
-      const evalResult = safeEvalMath(state.expr);
-      document.getElementById(`${cid}_res`).textContent = evalResult !== null ? evalResult : "0";
-    }
-
-    function openKeypadModal(targetInputId) {
-      calcTargetInputId = targetInputId;
-      const initialVal = document.getElementById(targetInputId).value.trim();
-      buildCalculatorUI("keypadModalContainer", true);
-      calcStore["keypadModalContainer"] = { expr: initialVal && !isNaN(initialVal) ? initialVal : "" };
-      pressCalcKey("keypadModalContainer", "");
-      openModal("modalCalculatorKeypad");
-    }
-
-    function applyCalcToTargetInput() {
-      if (calcTargetInputId && calcStore["keypadModalContainer"]) {
-        const finalVal = safeEvalMath(calcStore["keypadModalContainer"].expr);
-        document.getElementById(calcTargetInputId).value = (finalVal !== null && !isNaN(finalVal)) ? finalVal : 0;
-      }
-      closeModal("modalCalculatorKeypad");
+      document.getElementById("txExprDisplay").textContent = txKeypadExpr || "0";
+      const evalResult = safeEvalMath(txKeypadExpr);
+      document.getElementById("txAmtDisplay").textContent = "₹" + (evalResult !== null ? evalResult.toLocaleString() : "0");
     }
 
     // ==========================================
@@ -1300,7 +1211,7 @@
     }
 
     // ==========================================
-    // LEDGER TRANSACTIONS (GIVE / GOT)
+    // LEDGER TRANSACTIONS (GIVE / GOT WITH KEYPAD)
     // ==========================================
     function openTxModal(type, editTxId = null) {
       document.getElementById("txModalActionType").value = type;
@@ -1310,29 +1221,33 @@
 
       const header = document.getElementById("txModalHeader");
       const btn = document.getElementById("txModalBtn");
+      const amtDisplay = document.getElementById("txAmtDisplay");
 
       if (type === "GIVEN") {
         header.textContent = editTxId ? "✏️ Edit: Maine Diye (Udhar)" : "🔴 Maine Diye (Given / Udhar)";
         btn.textContent = editTxId ? "Update Entry" : "Save Maine Diye";
         btn.className = "btn-submit give";
+        amtDisplay.className = "calc-amt-box red";
       } else {
         header.textContent = editTxId ? "✏️ Edit: Maine Liye (Jama)" : "🟢 Maine Liye (Got / Jama)";
         btn.textContent = editTxId ? "Update Entry" : "Save Maine Liye";
         btn.className = "btn-submit got";
+        amtDisplay.className = "calc-amt-box green";
       }
 
       if (editTxId) {
         const cust = appData.customers.find(c => c.id === activeCustId);
         const tx = cust.transactions.find(t => t.id === editTxId);
         if (tx) {
-          document.getElementById("txModalAmount").value = tx.amount;
+          txKeypadExpr = String(tx.amount);
           document.getElementById("txModalRemarks").value = tx.remarks || "";
         }
       } else {
-        document.getElementById("txModalAmount").value = "";
+        txKeypadExpr = "";
         document.getElementById("txModalRemarks").value = "";
       }
 
+      pressTxKey("");
       openModal("modalTx");
     }
 
@@ -1342,14 +1257,12 @@
 
       const editId = document.getElementById("txModalEditId").value;
       const type = document.getElementById("txModalActionType").value;
-      
-      evaluateMathInput(document.getElementById("txModalAmount"));
-      const amount = parseFloat(document.getElementById("txModalAmount").value);
+      const amount = safeEvalMath(txKeypadExpr);
       const remarks = document.getElementById("txModalRemarks").value.trim();
       const sendWa = document.getElementById("txChkWA").checked;
       const sendSms = document.getElementById("txChkSMS").checked;
 
-      if (isNaN(amount) || amount <= 0) return alert("Enter a valid amount.");
+      if (!amount || isNaN(amount) || amount <= 0) return alert("Kripya sahi rakam enter karein.");
 
       let txObj;
       if (editId) {
@@ -1458,8 +1371,6 @@
     function submitMaalModal() {
       const editId = document.getElementById("maalModalEditId").value;
       const item = document.getElementById("maalModalItem").value.trim();
-      
-      evaluateMathInput(document.getElementById("maalModalAmount"));
       const amount = parseFloat(document.getElementById("maalModalAmount").value);
       const supplier = document.getElementById("maalModalSupplier").value.trim();
       const dateTime = document.getElementById("maalModalDateTime").value;
