@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Sunny Stores - OkCredit Ledger</title>
+  <title>સન્ની સ્ટોર્સ - ખાતાવહી અને કેલ્ક્યુલેટર</title>
   <style>
     :root {
       --bg-base: #0b131f;
@@ -17,7 +17,7 @@
       --ok-green: #10b981;
       --ok-blue: #38bdf8;
       --accent-yellow: #f59e0b;
-      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Shruti", "Nirmala UI", sans-serif;
     }
 
     * {
@@ -546,9 +546,7 @@
     .btn-submit.give { background: var(--ok-red); color: #fff; }
     .btn-submit.got { background: var(--ok-green); color: #0b131f; }
 
-    /* =========================================
-       IN-MODAL OKCREDIT CALCULATOR DISPLAY & KEYPAD
-       ========================================= */
+    /* In-Modal Calculator Display & Keypad */
     .modal-calc-display {
       background: var(--bg-input);
       border: 1.5px solid var(--border-subtle);
@@ -620,19 +618,19 @@
   <nav class="top-nav">
     <div class="brand-box">
       <div class="brand-logo">S</div>
-      <div class="brand-text">SUNNY STORES</div>
+      <div class="brand-text">સન્ની સ્ટોર્સ (SUNNY STORES)</div>
     </div>
     <div class="sync-status">
       <span class="sync-dot" id="syncDot"></span>
-      <span id="syncText">Local Only</span>
+      <span id="syncText">લોકલ સેવ</span>
     </div>
   </nav>
 
   <!-- Category Tabs -->
   <div class="nav-tabs">
-    <button class="nav-tab-btn active" onclick="switchNavTab('khata')">👥 Customers</button>
-    <button class="nav-tab-btn" onclick="switchNavTab('maal')">📦 Maal Inward</button>
-    <button class="nav-tab-btn" onclick="switchNavTab('settings')">⚙️ Settings</button>
+    <button class="nav-tab-btn active" onclick="switchNavTab('khata')">👥 ગ્રાહકો (ખાતાવહી)</button>
+    <button class="nav-tab-btn" onclick="switchNavTab('maal')">📦 માલ આવક (ઇનવર્ડ)</button>
+    <button class="nav-tab-btn" onclick="switchNavTab('settings')">⚙️ સેટિંગ્સ</button>
   </div>
 
   <main>
@@ -642,19 +640,19 @@
         <!-- Dual Net Balances -->
         <div class="ok-summary-card">
           <div class="ok-sub-box">
-            <div class="ok-sub-title">Aapko Dena Hai</div>
+            <div class="ok-sub-title">તમારે આપવાના છે</div>
             <div class="ok-sub-val green" id="statTotalAdv">₹0</div>
           </div>
           <div class="ok-sub-box">
-            <div class="ok-sub-title">Aapko Lena Hai</div>
+            <div class="ok-sub-title">તમારે લેવાના છે</div>
             <div class="ok-sub-val red" id="statTotalBaki">₹0</div>
           </div>
         </div>
 
         <!-- Filter & Add Bar -->
         <div class="filter-bar">
-          <input type="text" class="search-input" id="custSearch" placeholder="🔍 Search Customer or Mobile..." oninput="renderCustomerList()" />
-          <button class="btn-create-round" onclick="openCreateCustomerModal()">+ Add Grahak</button>
+          <input type="text" class="search-input" id="custSearch" placeholder="🔍 ગ્રાહકનું નામ કે મોબાઈલ નંબર શોધો..." oninput="renderCustomerList()" />
+          <button class="btn-create-round" onclick="openCreateCustomerModal()">+ નવો ગ્રાહક</button>
         </div>
 
         <!-- Customer List Feed -->
@@ -665,8 +663,8 @@
       <div id="customerLedgerContainer" style="display: none;">
         <div class="profile-header-card">
           <div class="profile-top-row">
-            <button class="btn-back" onclick="closeCustomerLedger()">← All Customers</button>
-            <button class="btn-mini" style="color:var(--ok-red); border-color: rgba(239,68,68,0.3);" onclick="deleteCurrentProfile()">Delete Grahak</button>
+            <button class="btn-back" onclick="closeCustomerLedger()">← બધા ગ્રાહકો</button>
+            <button class="btn-mini" style="color:var(--ok-red); border-color: rgba(239,68,68,0.3);" onclick="deleteCurrentProfile()">ગ્રાહક હટાવો</button>
           </div>
           <div class="profile-mid-row">
             <div>
@@ -675,17 +673,17 @@
             </div>
             <div class="profile-balance-badge">
               <div class="profile-balance-num" id="profileCustBalance">₹0</div>
-              <div class="cust-amount-label" id="profileCustStatus">Hisaab Clear</div>
+              <div class="cust-amount-label" id="profileCustStatus">હિસાબ ક્લિયર</div>
             </div>
           </div>
           <div class="profile-actions-bar">
-            <button class="btn-quick-notify wa" onclick="sendDirectReminder('wa')">📲 WhatsApp Reminder</button>
-            <button class="btn-quick-notify sms" onclick="sendDirectReminder('sms')">💬 SMS Reminder</button>
+            <button class="btn-quick-notify wa" onclick="sendDirectReminder('wa')">📲 વોટ્સએપ રીમાઇન્ડર</button>
+            <button class="btn-quick-notify sms" onclick="sendDirectReminder('sms')">💬 એસએમએસ રીમાઇન્ડર</button>
           </div>
         </div>
 
         <div style="font-size:0.78rem; font-weight:700; color:var(--text-sub); text-transform:uppercase; margin: 12px 4px 6px 4px;">
-          Passbook Statement
+          પાસબુક સ્ટેટમેન્ટ (લેવડ-દેવડ)
         </div>
 
         <!-- Transaction Feed -->
@@ -693,8 +691,8 @@
 
         <!-- Sticky Bottom OkCredit Action Buttons -->
         <div class="ok-bottom-sticky-bar">
-          <button class="btn-give" onclick="openTxModal('GIVEN')">🔴 MAINE DIYE ₹</button>
-          <button class="btn-receive" onclick="openTxModal('RECEIVED')">🟢 MAINE LIYE ₹</button>
+          <button class="btn-give" onclick="openTxModal('GIVEN')">🔴 મેં આપ્યા ₹ (ઉધાર)</button>
+          <button class="btn-receive" onclick="openTxModal('RECEIVED')">🟢 મેં લીધા ₹ (જમા)</button>
         </div>
       </div>
     </section>
@@ -703,18 +701,18 @@
     <section id="maalView" class="view-panel">
       <div class="ok-summary-card">
         <div class="ok-sub-box">
-          <div class="ok-sub-title">Total Maal Inward</div>
+          <div class="ok-sub-title">કુલ માલ ખરીદી કિંમત</div>
           <div class="ok-sub-val green" id="statMaalTotalCost">₹0</div>
         </div>
         <div class="ok-sub-box">
-          <div class="ok-sub-title">Shipments Count</div>
+          <div class="ok-sub-title">કુલ ઇનવર્ડ એન્ટ્રી</div>
           <div class="ok-sub-val red" style="color:var(--ok-blue);" id="statMaalEntries">0</div>
         </div>
       </div>
 
       <div class="filter-bar">
-        <input type="text" class="search-input" id="maalSearch" placeholder="🔍 Search Maal, Supplier, or Date..." oninput="renderMaalList()" />
-        <button class="btn-create-round" onclick="openMaalModal()">+ Add Maal</button>
+        <input type="text" class="search-input" id="maalSearch" placeholder="🔍 માલનું નામ, વેપારી કે તારીખ શોધો..." oninput="renderMaalList()" />
+        <button class="btn-create-round" onclick="openMaalModal()">+ માલ ઉમેરો</button>
       </div>
 
       <div id="maalListContainer"></div>
@@ -723,34 +721,34 @@
     <!-- TAB 3: SETTINGS & SYNC -->
     <section id="settingsView" class="view-panel">
       <div class="profile-header-card">
-        <div style="font-size:1rem; font-weight:700; margin-bottom:6px;">🔐 Master Security Access</div>
-        <p style="font-size:0.78rem; color:var(--text-sub); margin-bottom:12px;">Enter Master Passphrase to configure GitHub Token settings.</p>
+        <div style="font-size:1rem; font-weight:700; margin-bottom:6px;">🔐 માસ્ટર સિક્યુરિટી એક્સેસ</div>
+        <p style="font-size:0.78rem; color:var(--text-sub); margin-bottom:12px;">GitHub Sync સેટિંગ્સ અનલૉક કરવા માટે માસ્ટર પાસફ્રેઝ દાખલ કરો.</p>
         <div class="form-group">
-          <input type="password" id="passInput" placeholder="Master Passphrase" />
+          <input type="password" id="passInput" placeholder="માસ્ટર પાસફ્રેઝ (Master Passphrase)" />
         </div>
-        <button class="btn-submit" onclick="verifyPassphrase()">Unlock Settings</button>
+        <button class="btn-submit" onclick="verifyPassphrase()">સેટિંગ્સ અનલૉક કરો</button>
       </div>
 
       <div class="profile-header-card" id="tokenBox" style="display:none;">
-        <div style="font-size:1rem; font-weight:700; margin-bottom:6px;">⚡ GitHub Live Fast-Sync</div>
+        <div style="font-size:1rem; font-weight:700; margin-bottom:6px;">⚡ GitHub લાઈવ ફાસ્ટ-સિંક</div>
         <div class="form-group">
-          <label>Repository (Hardcoded)</label>
+          <label>રિપોઝીટરી (Hardcoded)</label>
           <input type="text" value="TechsInMyDNA / SUNNY-STORES-MANAGEMENT-SYSTEM" disabled style="opacity:0.65;" />
         </div>
         <div class="form-group">
-          <label>GitHub Personal Access Token (PAT)</label>
+          <label>GitHub પર્સનલ એક્સેસ ટોકન (PAT)</label>
           <input type="password" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
         </div>
         <div style="display:flex; gap:10px;">
-          <button class="btn-submit got" onclick="saveToken()">Save & Sync Cloud</button>
-          <button class="btn-submit give" onclick="disconnectToken()">Disconnect</button>
+          <button class="btn-submit got" onclick="saveToken()">સાચવો અને સિંક કરો</button>
+          <button class="btn-submit give" onclick="disconnectToken()">ડિસ્કનેક્ટ કરો</button>
         </div>
       </div>
 
       <div class="profile-header-card">
-        <div style="font-size:1rem; font-weight:700; margin-bottom:6px;">💾 Local Data Backup</div>
-        <p style="font-size:0.78rem; color:var(--text-sub); margin-bottom:12px;">Download an exact JSON backup copy of all store data.</p>
-        <button class="btn-submit" onclick="downloadBackup()">Export data.json</button>
+        <div style="font-size:1rem; font-weight:700; margin-bottom:6px;">💾 લોકલ ડેટા બેકઅપ</div>
+        <p style="font-size:0.78rem; color:var(--text-sub); margin-bottom:12px;">સ્ટોરના તમામ ડેટાની JSON બેકઅપ ફાઇલ ડાઉનલોડ કરો.</p>
+        <button class="btn-submit" onclick="downloadBackup()">બેકઅપ ડાઉનલોડ કરો (data.json)</button>
       </div>
     </section>
   </main>
@@ -761,18 +759,18 @@
   <div class="modal-overlay" id="modalCustomer">
     <div class="modal-sheet">
       <div class="sheet-title">
-        <span>Add New Customer</span>
+        <span>નવો ગ્રાહક ઉમેરો</span>
         <button class="sheet-close" onclick="closeModal('modalCustomer')">✕</button>
       </div>
       <div class="form-group">
-        <label>Customer Name *</label>
-        <input type="text" id="custModalName" placeholder="e.g. Ramesh Bhai" />
+        <label>ગ્રાહકનું નામ *</label>
+        <input type="text" id="custModalName" placeholder="દા.ત. રમેશભાઈ" />
       </div>
       <div class="form-group">
-        <label>Mobile Number (For WhatsApp / SMS)</label>
-        <input type="tel" id="custModalPhone" placeholder="10 Digit Mobile Number" maxlength="10" />
+        <label>મોબાઈલ નંબર (વોટ્સએપ / SMS માટે)</label>
+        <input type="tel" id="custModalPhone" placeholder="10 અંકનો મોબાઈલ નંબર" maxlength="10" />
       </div>
-      <button class="btn-submit" onclick="saveNewCustomer()">Create Profile</button>
+      <button class="btn-submit" onclick="saveNewCustomer()">પ્રોફાઇલ બનાવો</button>
     </div>
   </div>
 
@@ -780,7 +778,7 @@
   <div class="modal-overlay" id="modalTx">
     <div class="modal-sheet">
       <div class="sheet-title">
-        <span id="txModalHeader">Transaction</span>
+        <span id="txModalHeader">લેવડ-દેવડ</span>
         <button class="sheet-close" onclick="closeModal('modalTx')">✕</button>
       </div>
       <input type="hidden" id="txModalEditId" value="" />
@@ -820,23 +818,23 @@
       </div>
 
       <div class="form-group">
-        <label>Remarks / Bill Description (Optional)</label>
-        <input type="text" id="txModalRemarks" placeholder="e.g. 2 Packet Goods / Cash" />
+        <label>વિગત / બિલની નોંધ (વૈકલ્પિક)</label>
+        <input type="text" id="txModalRemarks" placeholder="દા.ત. 2 પેકેટ સામાન / રોકડ" />
       </div>
 
       <!-- DEFAULT CHECKBOXES ARE OFF -->
       <div class="check-row">
         <label class="check-item">
           <input type="checkbox" id="txChkWA" />
-          <span>WhatsApp Alert</span>
+          <span>વોટ્સએપ મેસેજ મોકલો</span>
         </label>
         <label class="check-item">
           <input type="checkbox" id="txChkSMS" />
-          <span>SMS Alert</span>
+          <span>એસએમએસ મોકલો</span>
         </label>
       </div>
 
-      <button class="btn-submit" id="txModalBtn" onclick="submitTransactionModal()">Save</button>
+      <button class="btn-submit" id="txModalBtn" onclick="submitTransactionModal()">સાચવો</button>
     </div>
   </div>
 
@@ -844,33 +842,33 @@
   <div class="modal-overlay" id="modalMaal">
     <div class="modal-sheet">
       <div class="sheet-title">
-        <span id="maalModalHeader">📦 Maal Inward</span>
+        <span id="maalModalHeader">📦 માલ આવક (ઇનવર્ડ)</span>
         <button class="sheet-close" onclick="closeModal('modalMaal')">✕</button>
       </div>
       <input type="hidden" id="maalModalEditId" value="" />
 
       <div class="form-group">
-        <label>Kya Maal Aaya (Item Name) *</label>
-        <input type="text" id="maalModalItem" list="maalSuggestions" placeholder="Start typing item name..." autocomplete="off" />
+        <label>શું માલ આવ્યો (વસ્તુનું નામ) *</label>
+        <input type="text" id="maalModalItem" list="maalSuggestions" placeholder="વસ્તુનું નામ લખો..." autocomplete="off" />
         <datalist id="maalSuggestions"></datalist>
       </div>
 
       <div class="form-group">
-        <label>Kitne Ka Aaya (₹ Total) *</label>
-        <input type="number" id="maalModalAmount" placeholder="Amount ₹" />
+        <label>કેટલાનો આવ્યો (કુલ રકમ ₹) *</label>
+        <input type="number" id="maalModalAmount" placeholder="રકમ ₹" />
       </div>
 
       <div class="form-group">
-        <label>Kisse Aaya (Supplier / Agency) *</label>
-        <input type="text" id="maalModalSupplier" placeholder="Supplier Name" />
+        <label>કોની પાસેથી આવ્યો (વેપારી / એજન્સી) *</label>
+        <input type="text" id="maalModalSupplier" placeholder="વેપારીનું નામ" />
       </div>
 
       <div class="form-group">
-        <label>Kab Aaya (Date & Time) *</label>
+        <label>ક્યારે આવ્યો (તારીખ અને સમય) *</label>
         <input type="datetime-local" id="maalModalDateTime" />
       </div>
 
-      <button class="btn-submit got" id="maalModalBtn" onclick="submitMaalModal()">Save Maal Inward</button>
+      <button class="btn-submit got" id="maalModalBtn" onclick="submitMaalModal()">માલ એન્ટ્રી સાચવો</button>
     </div>
   </div>
 
@@ -913,7 +911,7 @@
       if (savedToken) {
         syncPullFromGitHub();
       } else {
-        updateBadge("local", "Local Only");
+        updateBadge("local", "લોકલ સેવ");
       }
 
       window.addEventListener("online", () => {
@@ -952,26 +950,26 @@
         const tok = localStorage.getItem("ss_gh_token");
         if (tok) document.getElementById("ghTokenInput").value = tok;
         document.getElementById("passInput").value = "";
-        alert("Settings Unlocked.");
+        alert("સેટિંગ્સ અનલૉક થઈ ગયું છે.");
       } else {
-        alert("Invalid Passphrase!");
+        alert("ખોટો પાસફ્રેઝ!");
       }
     }
 
     function saveToken() {
       const tok = document.getElementById("ghTokenInput").value.trim();
-      if (!tok) return alert("Enter a valid GitHub Personal Access Token.");
+      if (!tok) return alert("કૃપા કરીને માન્ય GitHub ટોકન દાખલ કરો.");
       localStorage.setItem("ss_gh_token", tok);
-      alert("Token saved. Starting Cloud Sync...");
+      alert("ટોકન સેવ થઈ ગયું. ક્લાઉડ સિંક શરૂ થઈ રહ્યું છે...");
       syncPullFromGitHub();
     }
 
     function disconnectToken() {
-      if (confirm("Disconnect GitHub Sync? Data will stay stored locally.")) {
+      if (confirm("શું તમે GitHub સિંક ડિસ્કનેક્ટ કરવા માંગો છો? ડેટા લોકલ સેવ રહેશે.")) {
         localStorage.removeItem("ss_gh_token");
         document.getElementById("ghTokenInput").value = "";
         document.getElementById("tokenBox").style.display = "none";
-        updateBadge("local", "Local Only");
+        updateBadge("local", "લોકલ સેવ");
       }
     }
 
@@ -1004,7 +1002,7 @@
       if (tok && navigator.onLine) {
         syncPushToGitHub();
       } else if (!navigator.onLine) {
-        updateBadge("offline", "Offline (Saved)");
+        updateBadge("offline", "ઑફલાઇન (લોકલ સેવ)");
       }
     }
 
@@ -1012,7 +1010,7 @@
       const tok = localStorage.getItem("ss_gh_token");
       if (!tok) return;
 
-      updateBadge("syncing", "Syncing...");
+      updateBadge("syncing", "સિંક થઈ રહ્યું છે...");
       const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
 
       try {
@@ -1034,14 +1032,14 @@
             await syncPushToGitHub();
             return;
           }
-          updateBadge("synced", "⚡ Live Synced");
+          updateBadge("synced", "⚡ લાઈવ સિંક");
         } else if (res.status === 404) {
           await syncPushToGitHub();
         } else {
-          updateBadge("offline", "Auth Error");
+          updateBadge("offline", "ઑથ ભૂલ");
         }
       } catch (e) {
-        updateBadge("offline", "Local Only");
+        updateBadge("offline", "લોકલ સેવ");
       }
     }
 
@@ -1050,7 +1048,7 @@
       if (!tok || isSyncing) return;
 
       isSyncing = true;
-      updateBadge("syncing", "Live Saving...");
+      updateBadge("syncing", "ક્લાઉડમાં સેવ થાય છે...");
 
       const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
       const jsonStr = JSON.stringify(appData, null, 2);
@@ -1087,12 +1085,12 @@
         if (putRes.ok) {
           const r = await putRes.json();
           ghSha = r.content.sha;
-          updateBadge("synced", "⚡ Live Synced");
+          updateBadge("synced", "⚡ લાઈવ સિંક");
         } else {
-          updateBadge("offline", "Pending Sync");
+          updateBadge("offline", "સિંક પેન્ડિંગ");
         }
       } catch (e) {
-        updateBadge("offline", "Saved Locally");
+        updateBadge("offline", "લોકલ સેવ");
       } finally {
         isSyncing = false;
       }
@@ -1149,7 +1147,7 @@
 
       document.getElementById("txExprDisplay").textContent = txKeypadExpr || "0";
       const evalResult = safeEvalMath(txKeypadExpr);
-      document.getElementById("txAmtDisplay").textContent = "₹" + (evalResult !== null ? evalResult.toLocaleString() : "0");
+      document.getElementById("txAmtDisplay").textContent = "₹" + (evalResult !== null ? evalResult.toLocaleString('en-IN') : "0");
     }
 
     // ==========================================
@@ -1165,11 +1163,11 @@
       const name = document.getElementById("custModalName").value.trim();
       const phone = document.getElementById("custModalPhone").value.trim();
 
-      if (!name) return alert("Please enter Customer Name.");
+      if (!name) return alert("કૃપા કરીને ગ્રાહકનું નામ દાખલ કરો.");
 
       const existing = appData.customers.find(c => c.name.toLowerCase() === name.toLowerCase());
       if (existing) {
-        alert("Customer profile already exists!");
+        alert("આ નામનો ગ્રાહક પહેલેથી જ હાજર છે!");
         closeModal("modalCustomer");
         openCustomerLedger(existing.id);
         return;
@@ -1203,7 +1201,7 @@
     }
 
     function deleteCurrentProfile() {
-      if (confirm("Delete this Customer and all associated ledger records?")) {
+      if (confirm("શું તમે આ ગ્રાહક અને તેમના તમામ ખાતાવહી રેકોર્ડ્સ કાઢી નાખવા માંગો છો?")) {
         appData.customers = appData.customers.filter(c => c.id !== activeCustId);
         saveToStorage();
         closeCustomerLedger();
@@ -1224,13 +1222,13 @@
       const amtDisplay = document.getElementById("txAmtDisplay");
 
       if (type === "GIVEN") {
-        header.textContent = editTxId ? "✏️ Edit: Maine Diye (Udhar)" : "🔴 Maine Diye (Given / Udhar)";
-        btn.textContent = editTxId ? "Update Entry" : "Save Maine Diye";
+        header.textContent = editTxId ? "✏️ સુધારો: મેં આપ્યા (ઉધાર)" : "🔴 મેં આપ્યા (ઉધાર / બાકી)";
+        btn.textContent = editTxId ? "એન્ટ્રી અપડેટ કરો" : "મેં આપ્યા સાચવો";
         btn.className = "btn-submit give";
         amtDisplay.className = "calc-amt-box red";
       } else {
-        header.textContent = editTxId ? "✏️ Edit: Maine Liye (Jama)" : "🟢 Maine Liye (Got / Jama)";
-        btn.textContent = editTxId ? "Update Entry" : "Save Maine Liye";
+        header.textContent = editTxId ? "✏️ સુધારો: મેં લીધા (જમા)" : "🟢 મેં લીધા (જમા / પેમેન્ટ)";
+        btn.textContent = editTxId ? "એન્ટ્રી અપડેટ કરો" : "મેં લીધા સાચવો";
         btn.className = "btn-submit got";
         amtDisplay.className = "calc-amt-box green";
       }
@@ -1262,7 +1260,7 @@
       const sendWa = document.getElementById("txChkWA").checked;
       const sendSms = document.getElementById("txChkSMS").checked;
 
-      if (!amount || isNaN(amount) || amount <= 0) return alert("Kripya sahi rakam enter karein.");
+      if (!amount || isNaN(amount) || amount <= 0) return alert("કૃપા કરીને સાચી રકમ દાખલ કરો.");
 
       let txObj;
       if (editId) {
@@ -1292,7 +1290,7 @@
     }
 
     function deleteLedgerEntry(txId) {
-      if (confirm("Delete this transaction entry?")) {
+      if (confirm("આ લેવડ-દેવડની એન્ટ્રી કાઢી નાખવી છે?")) {
         const cust = appData.customers.find(c => c.id === activeCustId);
         if (cust) {
           cust.transactions = cust.transactions.filter(t => t.id !== txId);
@@ -1302,17 +1300,18 @@
       }
     }
 
-    // Reminders & Alerts
+    // Reminders & Alerts (Gujarati Templates)
     function triggerNotification(cust, tx, channel) {
       const isGiven = tx.type === "GIVEN";
-      const msg = `*SUNNY STORES - Hisaab Update*\nNamaste ${cust.name},\nAapke khate me transaction darj hua hai:\n- Type: ${isGiven ? 'Maine Diye (Udhar/Baki)' : 'Maine Liye (Jama)'}\n- Rakam: ₹${tx.amount.toLocaleString()}\n- Vivaran: ${tx.remarks || 'Standard Hisaab'}\n- Date: ${new Date(tx.date).toLocaleDateString()}\nDhanyawad! - Sunny Stores`;
+      const typeText = isGiven ? "મેં આપ્યા (ઉધાર / બાકી)" : "મેં લીધા (જમા)";
+      const msg = `*સન્ની સ્ટોર્સ - ખાતા અપડેટ*\nનમસ્તે ${cust.name},\nતમારા ખાતામાં નવી એન્ટ્રી નોંધાઈ છે:\n- પ્રકાર: ${typeText}\n- રકમ: ₹${tx.amount.toLocaleString('en-IN')}\n- વિગત: ${tx.remarks || 'નિયમિત હિસાબ'}\n- તારીખ: ${new Date(tx.date).toLocaleDateString('en-IN')}\nઆભાર! - સન્ની સ્ટોર્સ (Sunny Stores)`;
       dispatchDirect(cust.phone, msg, channel);
     }
 
     function sendDirectReminder(channel) {
       const cust = appData.customers.find(c => c.id === activeCustId);
       if (!cust) return;
-      if (!cust.phone) return alert("Customer phone number not available.");
+      if (!cust.phone) return alert("ગ્રાહકનો મોબાઈલ નંબર ઉપલબ્ધ નથી.");
 
       let given = 0, got = 0;
       cust.transactions.forEach(t => {
@@ -1321,9 +1320,9 @@
       });
       const balance = given - got;
 
-      if (balance <= 0) return alert("Customer has no pending due balance!");
+      if (balance <= 0) return alert("ગ્રાહક પાસે કોઈ રકમ બાકી નથી!");
 
-      const msg = `*SUNNY STORES - Payment Reminder*\nNamaste ${cust.name},\nAapka Sunny Stores par kul hisaab ₹${balance.toLocaleString()} baaki hai. Kripya samay anusar bhugtan karein.\nDhanyawad! - Sunny Stores`;
+      const msg = `*સન્ની સ્ટોર્સ - પેમેન્ટ રીમાઇન્ડર*\nનમસ્તે ${cust.name},\nસન્ની સ્ટોર્સ પર તમારો કુલ બાકી હિસાબ ₹${balance.toLocaleString('en-IN')} છે. કૃપા કરીને સમયસર ચુકવણી કરવા વિનંતી.\nઆભાર! - સન્ની સ્ટોર્સ (Sunny Stores)`;
       dispatchDirect(cust.phone, msg, channel);
     }
 
@@ -1348,20 +1347,20 @@
       if (editId) {
         const m = appData.maal.find(x => x.id === editId);
         if (m) {
-          document.getElementById("maalModalHeader").textContent = "✏️ Edit Maal Inward";
+          document.getElementById("maalModalHeader").textContent = "✏️ સુધારો: માલ આવક";
           document.getElementById("maalModalItem").value = m.item;
           document.getElementById("maalModalAmount").value = m.amount;
           document.getElementById("maalModalSupplier").value = m.supplier;
           document.getElementById("maalModalDateTime").value = new Date(m.dateTime).toISOString().slice(0, 16);
-          document.getElementById("maalModalBtn").textContent = "Update Maal Entry";
+          document.getElementById("maalModalBtn").textContent = "એન્ટ્રી અપડેટ કરો";
         }
       } else {
-        document.getElementById("maalModalHeader").textContent = "📦 New Maal Aawam";
+        document.getElementById("maalModalHeader").textContent = "📦 નવો માલ આવક";
         document.getElementById("maalModalItem").value = "";
         document.getElementById("maalModalAmount").value = "";
         document.getElementById("maalModalSupplier").value = "";
         document.getElementById("maalModalDateTime").value = now.toISOString().slice(0, 16);
-        document.getElementById("maalModalBtn").textContent = "Save Maal Inward";
+        document.getElementById("maalModalBtn").textContent = "માલ એન્ટ્રી સાચવો";
       }
 
       updateMaalSuggestions();
@@ -1376,7 +1375,7 @@
       const dateTime = document.getElementById("maalModalDateTime").value;
 
       if (!item || isNaN(amount) || !supplier || !dateTime) {
-        return alert("Please fill all Maal Inward fields properly.");
+        return alert("કૃપા કરીને બધી વિગતો યોગ્ય રીતે ભરો.");
       }
 
       if (editId) {
@@ -1403,7 +1402,7 @@
     }
 
     function deleteMaalItem(id) {
-      if (confirm("Delete this Maal Inward record?")) {
+      if (confirm("આ માલ આવકનો રેકોર્ડ કાઢી નાખવો છે?")) {
         appData.maal = appData.maal.filter(m => m.id !== id);
         saveToStorage();
         renderMaalList();
@@ -1453,18 +1452,18 @@
         return c.name.toLowerCase().includes(search) || (c.phone && c.phone.includes(search));
       });
 
-      document.getElementById("statTotalBaki").textContent = "₹" + totalLenaHai.toLocaleString();
-      document.getElementById("statTotalAdv").textContent = "₹" + totalDenaHai.toLocaleString();
+      document.getElementById("statTotalBaki").textContent = "₹" + totalLenaHai.toLocaleString('en-IN');
+      document.getElementById("statTotalAdv").textContent = "₹" + totalDenaHai.toLocaleString('en-IN');
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-sub); font-size: 0.85rem;">Koi customer nahi mila. Naya jodne ke liye <b>+ Add Grahak</b> dabayein.</div>`;
+        container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-sub); font-size: 0.85rem;">કોઈ ગ્રાહક મળ્યા નથી. નવો ઉમેરવા માટે <b>+ નવો ગ્રાહક</b> દબાવો.</div>`;
         return;
       }
 
       filtered.forEach(cust => {
         const initials = cust.name.trim().charAt(0).toUpperCase();
         const lastTx = cust.transactions[0];
-        const lastDate = lastTx ? new Date(lastTx.date).toLocaleDateString("en-IN", { day: 'numeric', month: 'short' }) : 'No Activity';
+        const lastDate = lastTx ? new Date(lastTx.date).toLocaleDateString("en-IN", { day: 'numeric', month: 'short' }) : 'કોઈ એન્ટ્રી નથી';
 
         const div = document.createElement("div");
         div.className = "cust-feed-item";
@@ -1472,16 +1471,16 @@
 
         let balClass = "settled";
         let balText = "₹0";
-        let labelText = "Chutta";
+        let labelText = "ચુકતે હિસાબ";
 
         if (cust.balance > 0) {
           balClass = "due";
-          balText = "₹" + cust.balance.toLocaleString();
-          labelText = "Due (Lena Hai)";
+          balText = "₹" + cust.balance.toLocaleString('en-IN');
+          labelText = "બાકી (લેવાના છે)";
         } else if (cust.balance < 0) {
           balClass = "adv";
-          balText = "₹" + Math.abs(cust.balance).toLocaleString();
-          labelText = "Advance (Dena Hai)";
+          balText = "₹" + Math.abs(cust.balance).toLocaleString('en-IN');
+          labelText = "એડવાન્સ (આપવાના છે)";
         }
 
         div.innerHTML = `
@@ -1504,7 +1503,7 @@
       if (!cust) return;
 
       document.getElementById("profileCustName").textContent = cust.name;
-      document.getElementById("profileCustPhone").textContent = cust.phone ? "📞 " + cust.phone : "No Phone Added";
+      document.getElementById("profileCustPhone").textContent = cust.phone ? "📞 " + cust.phone : "મોબાઈલ નંબર નથી";
 
       let given = 0, got = 0;
       cust.transactions.forEach(t => {
@@ -1517,24 +1516,24 @@
       const balStatus = document.getElementById("profileCustStatus");
 
       if (balance > 0) {
-        balNum.textContent = "₹" + balance.toLocaleString();
+        balNum.textContent = "₹" + balance.toLocaleString('en-IN');
         balNum.style.color = "var(--ok-red)";
-        balStatus.textContent = "Aapko Lena Hai (Due)";
+        balStatus.textContent = "તમારે લેવાના છે (બાકી)";
       } else if (balance < 0) {
-        balNum.textContent = "₹" + Math.abs(balance).toLocaleString();
+        balNum.textContent = "₹" + Math.abs(balance).toLocaleString('en-IN');
         balNum.style.color = "var(--ok-green)";
-        balStatus.textContent = "Aapko Dena Hai (Advance)";
+        balStatus.textContent = "તમારે આપવાના છે (એડવાન્સ)";
       } else {
         balNum.textContent = "₹0";
         balNum.style.color = "var(--text-sub)";
-        balStatus.textContent = "Hisaab Barabar";
+        balStatus.textContent = "હિસાબ બરાબર";
       }
 
       const timeline = document.getElementById("ledgerTimelineList");
       timeline.innerHTML = "";
 
       if (cust.transactions.length === 0) {
-        timeline.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-sub); font-size: 0.85rem;">Abhi koi entry nahi hai. Niche diye buttons se entry karein.</div>`;
+        timeline.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-sub); font-size: 0.85rem;">હજુ સુધી કોઈ લેવડ-દેવડ નથી. નીચે આપેલા બટનથી એન્ટ્રી કરો.</div>`;
         return;
       }
 
@@ -1548,11 +1547,11 @@
         div.innerHTML = `
           <div class="tx-details">
             <div class="tx-date">${dateStr}</div>
-            <div class="tx-note">${tx.remarks ? tx.remarks : (isGiven ? 'Maine Diye (Udhar)' : 'Maine Liye (Payment)')}</div>
+            <div class="tx-note">${tx.remarks ? tx.remarks : (isGiven ? 'મેં આપ્યા (ઉધાર)' : 'મેં લીધા (પેમેન્ટ / જમા)')}</div>
           </div>
           <div class="tx-amount-col">
-            <div class="tx-num ${isGiven ? 'red' : 'green'}">₹${tx.amount.toLocaleString()}</div>
-            <div class="tx-tag">${isGiven ? 'DIYE' : 'LIYE'}</div>
+            <div class="tx-num ${isGiven ? 'red' : 'green'}">₹${tx.amount.toLocaleString('en-IN')}</div>
+            <div class="tx-tag">${isGiven ? 'આપ્યા' : 'લીધા'}</div>
           </div>
           <div class="tx-ctrls">
             <button class="btn-mini" onclick="openTxModal('${tx.type}', '${tx.id}')">✏️</button>
@@ -1574,11 +1573,11 @@
         return m.item.toLowerCase().includes(search) || m.supplier.toLowerCase().includes(search);
       });
 
-      document.getElementById("statMaalTotalCost").textContent = "₹" + total.toLocaleString();
+      document.getElementById("statMaalTotalCost").textContent = "₹" + total.toLocaleString('en-IN');
       document.getElementById("statMaalEntries").textContent = appData.maal.length;
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-sub); font-size: 0.85rem;">Koi Maal Inward record nahi mila.</div>`;
+        container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-sub); font-size: 0.85rem;">કોઈ માલ આવકનો રેકોર્ડ મળ્યો નથી.</div>`;
         return;
       }
 
@@ -1592,10 +1591,10 @@
         div.innerHTML = `
           <div style="flex:1; min-width:0;">
             <div style="font-weight:700; font-size:0.95rem;">${m.item}</div>
-            <div style="font-size:0.72rem; color:var(--text-sub); margin-top:2px;">Kisse: <strong>${m.supplier}</strong> • Kab: ${dateStr}</div>
+            <div style="font-size:0.72rem; color:var(--text-sub); margin-top:2px;">વેપારી: <strong>${m.supplier}</strong> • તારીખ: ${dateStr}</div>
           </div>
           <div style="text-align:right; margin-right:12px;">
-            <div style="font-weight:800; font-size:1.05rem; color:var(--ok-blue);">₹${m.amount.toLocaleString()}</div>
+            <div style="font-weight:800; font-size:1.05rem; color:var(--ok-blue);">₹${m.amount.toLocaleString('en-IN')}</div>
           </div>
           <div style="display:flex; gap:4px;">
             <button class="btn-mini" onclick="openMaalModal('${m.id}')">✏️</button>
