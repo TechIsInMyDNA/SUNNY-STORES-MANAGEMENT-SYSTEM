@@ -51,7 +51,6 @@
     .brand-title {
       font-size: 1.05rem;
       font-weight: 700;
-      color: var(--text-main);
       letter-spacing: 0.5px;
     }
 
@@ -81,12 +80,11 @@
       50% { opacity: 0.3; }
     }
 
-    /* Navigation Tabs */
+    /* Tabs */
     .tab-bar {
       display: flex;
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
-      overflow-x: auto;
     }
 
     .tab-btn {
@@ -100,8 +98,6 @@
       border: none;
       border-bottom: 2px solid transparent;
       cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
     }
 
     .tab-btn.active {
@@ -109,7 +105,6 @@
       border-bottom-color: var(--accent-blue);
     }
 
-    /* Content Area */
     main {
       flex: 1;
       max-width: 900px;
@@ -118,14 +113,10 @@
       padding: 14px;
     }
 
-    .panel {
-      display: none;
-    }
-    .panel.active {
-      display: block;
-    }
+    .panel { display: none; }
+    .panel.active { display: block; }
 
-    /* Quick Stats */
+    /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -152,12 +143,11 @@
       font-weight: 700;
       margin-top: 4px;
     }
-
     .stat-value.green { color: var(--accent-green); }
     .stat-value.red { color: var(--accent-red); }
     .stat-value.blue { color: var(--accent-blue); }
 
-    /* Form Card */
+    /* Card */
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -170,11 +160,16 @@
       font-size: 0.95rem;
       font-weight: 600;
       margin-bottom: 12px;
-      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .form-group {
-      margin-bottom: 12px;
+    .form-group { margin-bottom: 12px; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
     label {
@@ -193,17 +188,35 @@
       font-size: 0.9rem;
       color: var(--text-main);
       outline: none;
-      transition: border-color 0.2s;
     }
 
     input:focus, select:focus, textarea:focus {
       border-color: var(--accent-blue);
     }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+    .checkbox-bar {
+      display: flex;
+      gap: 16px;
+      margin: 12px 0;
+      padding: 8px 12px;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+    }
+
+    .checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent-blue);
     }
 
     .btn {
@@ -214,38 +227,12 @@
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
-    .btn:active {
-      opacity: 0.8;
     }
 
     .btn-primary { background: var(--accent-blue); color: #0b1120; }
     .btn-green { background: var(--accent-green); color: #0b1120; }
     .btn-red { background: var(--accent-red); color: #ffffff; }
-
-    /* Checkbox & Switch */
-    .checkbox-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 10px 0;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      cursor: pointer;
-    }
-
-    .checkbox-row input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      accent-color: var(--accent-blue);
-    }
-
-    /* List & Items */
-    .search-box {
-      margin-bottom: 12px;
-    }
+    .btn-secondary { background: var(--bg-subtle); color: var(--text-main); }
 
     .item-list {
       display: flex;
@@ -262,33 +249,16 @@
       justify-content: space-between;
       align-items: center;
       gap: 8px;
+      cursor: pointer;
     }
 
-    .item-info {
-      flex: 1;
-      min-width: 0;
+    .list-item:hover {
+      border-color: var(--accent-blue);
     }
 
-    .item-primary {
-      font-size: 0.92rem;
-      font-weight: 600;
-      color: var(--text-main);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .item-secondary {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 3px;
-    }
-
-    .item-actions {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
+    .item-info { flex: 1; min-width: 0; }
+    .item-primary { font-size: 0.92rem; font-weight: 600; color: var(--text-main); }
+    .item-secondary { font-size: 0.75rem; color: var(--text-muted); margin-top: 3px; }
 
     .action-icon-btn {
       background: var(--bg-subtle);
@@ -298,7 +268,6 @@
       border-radius: 6px;
       font-size: 0.75rem;
       cursor: pointer;
-      text-decoration: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -307,13 +276,29 @@
     .action-icon-btn.wa { background: #065f46; color: #6ee7b7; }
     .action-icon-btn.sms { background: #1e3a8a; color: #93c5fd; }
     .action-icon-btn.del { background: #450a0a; color: #fca5a5; }
+    .action-icon-btn.edit { background: #3b2a05; color: #fde047; }
 
-    /* Settings section */
-    .sec-notice {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-      line-height: 1.4;
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      max-width: 500px;
+      width: 100%;
+      padding: 18px;
+      max-height: 90vh;
+      overflow-y: auto;
     }
   </style>
 </head>
@@ -321,83 +306,116 @@
 
   <header>
     <div class="brand-title">SUNNY STORES</div>
-    <div class="sync-badge" id="syncStatusBadge">
+    <div class="sync-badge">
       <span class="sync-dot" id="syncDot"></span>
       <span id="syncText">Local Only</span>
     </div>
   </header>
 
   <nav class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('khata')">📒 Hisaab Kitaab</button>
+    <button class="tab-btn active" onclick="switchTab('khata')">📒 Customers (Khata)</button>
     <button class="tab-btn" onclick="switchTab('maal')">📦 Maal Inward</button>
     <button class="tab-btn" onclick="switchTab('settings')">⚙️ Security & Sync</button>
   </nav>
 
   <main>
-    <!-- TAB 1: HISAAB KITAAB -->
+    <!-- TAB 1: KHATA CUSTOMER DIRECTORY -->
     <section id="khataPanel" class="panel active">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total Udhar (Given)</div>
-          <div class="stat-value red" id="statTotalUdhar">₹0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Total Jama (Received)</div>
-          <div class="stat-value green" id="statTotalJama">₹0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Net Balance (Baki)</div>
-          <div class="stat-value blue" id="statNetKhata">₹0</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">New Entry (Grahak Hisaab)</div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Customer Name *</label>
-            <input type="text" id="custName" placeholder="e.g. Ramesh Bhai" />
+      <div id="customerDirectoryView">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Net Udhar (Market Baki)</div>
+            <div class="stat-value red" id="statNetBaki">₹0</div>
           </div>
-          <div class="form-group">
-            <label>Mobile Number</label>
-            <input type="tel" id="custPhone" placeholder="10 digit mobile" maxlength="10" />
+          <div class="stat-card">
+            <div class="stat-label">Total Customers</div>
+            <div class="stat-value blue" id="statCustCount">0</div>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Amount (₹) *</label>
-            <input type="number" id="custAmount" placeholder="Amount" />
+        <div class="card">
+          <div class="card-title">➕ Create Customer Profile</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Customer Name *</label>
+              <input type="text" id="newCustName" placeholder="e.g. Ramesh Bhai" />
+            </div>
+            <div class="form-group">
+              <label>Mobile Number</label>
+              <input type="tel" id="newCustPhone" placeholder="10 digit mobile" maxlength="10" />
+            </div>
           </div>
-          <div class="form-group">
-            <label>Transaction Type *</label>
-            <select id="custType">
-              <option value="UDHAR">GIVEN (Udhar / Diya)</option>
-              <option value="JAMA">RECEIVED (Jama / Aaya)</option>
-            </select>
-          </div>
+          <button class="btn btn-primary" onclick="createCustomerProfile()">Create Profile</button>
         </div>
 
         <div class="form-group">
-          <label>Remarks / Item Detail (Optional)</label>
-          <input type="text" id="custRemarks" placeholder="e.g. 2 Packet Goods" />
+          <input type="text" id="custSearch" placeholder="🔍 Search Customer by name or number..." oninput="renderCustomerDirectory()" />
         </div>
 
-        <!-- Default Checkbox OFF for auto-notification -->
-        <label class="checkbox-row">
-          <input type="checkbox" id="directNotifyCheck" />
-          <span>Open WhatsApp / SMS after saving this entry</span>
-        </label>
-
-        <button class="btn btn-primary" onclick="addKhataEntry()">💾 Save Entry</button>
+        <div class="item-list" id="customerDirectoryList"></div>
       </div>
 
-      <div class="search-box">
-        <input type="text" id="khataSearch" placeholder="🔍 Search Customer or Mobile..." oninput="renderKhataList()" />
-      </div>
+      <!-- CUSTOMER DETAIL PROFILE (LEDGER) VIEW -->
+      <div id="customerDetailView" style="display: none;">
+        <button class="btn btn-secondary" style="margin-bottom: 12px; width: auto; padding: 6px 14px;" onclick="closeCustomerProfile()">← Back to Customers</button>
 
-      <div class="item-list" id="khataListContainer">
-        <!-- Dynamic list -->
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <span id="profileName" style="font-size: 1.1rem; font-weight:700;"></span>
+              <div id="profilePhone" style="font-size: 0.78rem; color: var(--text-muted);"></div>
+            </div>
+            <div id="profileNetBalance" style="font-size: 1.1rem; font-weight:700;"></div>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button class="action-icon-btn wa" onclick="sendLedgerReminder('wa')">📲 WhatsApp Reminder</button>
+            <button class="action-icon-btn sms" onclick="sendLedgerReminder('sms')">💬 SMS Reminder</button>
+          </div>
+        </div>
+
+        <!-- Add/Edit Transaction Inside Customer Profile -->
+        <div class="card">
+          <div class="card-title" id="txFormTitle">Record Transaction</div>
+          <input type="hidden" id="txEditId" value="" />
+          <div class="form-row">
+            <div class="form-group">
+              <label>Amount (₹) *</label>
+              <input type="number" id="txAmount" placeholder="Amount ₹" />
+            </div>
+            <div class="form-group">
+              <label>Type *</label>
+              <select id="txType">
+                <option value="GIVEN">GIVEN (Udhar / Diya)</option>
+                <option value="RECEIVED">RECEIVED (Jama / Liya)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Details / Items (Optional)</label>
+            <input type="text" id="txRemarks" placeholder="e.g. 5 Pcs Goods" />
+          </div>
+
+          <!-- DEFAULT CHECKBOXES ARE OFF -->
+          <div class="checkbox-bar">
+            <label class="checkbox-label">
+              <input type="checkbox" id="chkWhatsApp" />
+              <span>WhatsApp Alert</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="chkSMS" />
+              <span>SMS Alert</span>
+            </label>
+          </div>
+
+          <div class="form-row">
+            <button class="btn btn-primary" id="btnSaveTx" onclick="saveTransaction()">Save Transaction</button>
+            <button class="btn btn-secondary" id="btnCancelTx" style="display:none;" onclick="cancelEditTransaction()">Cancel</button>
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-top: 16px;">Ledger History</div>
+        <div class="item-list" id="profileTxList"></div>
       </div>
     </section>
 
@@ -415,14 +433,17 @@
       </div>
 
       <div class="card">
-        <div class="card-title">New Maal Aawam (Stock Inward)</div>
+        <div class="card-title" id="maalFormTitle">📦 New Maal Aawam (Stock Inward)</div>
+        <input type="hidden" id="maalEditId" value="" />
         <div class="form-row">
           <div class="form-group">
-            <label>Kya Maal Aaya (Items / Details) *</label>
-            <input type="text" id="maalItem" placeholder="e.g. Soap 5 Box, Oil 10 Ctn" />
+            <label>Kya Maal Aaya (Item Name) *</label>
+            <input type="text" id="maalItem" list="itemListSuggestions" placeholder="Start typing item..." autocomplete="off" />
+            <!-- Suggestion Datalist to avoid duplication -->
+            <datalist id="itemListSuggestions"></datalist>
           </div>
           <div class="form-group">
-            <label>Kitne Ka Aaya (Total ₹) *</label>
+            <label>Kitne Ka Aaya (₹ Total) *</label>
             <input type="number" id="maalAmount" placeholder="Amount ₹" />
           </div>
         </div>
@@ -430,7 +451,7 @@
         <div class="form-row">
           <div class="form-group">
             <label>Kisse Aaya (Supplier / Party) *</label>
-            <input type="text" id="maalSupplier" placeholder="e.g. Nagpur Wholesalers" />
+            <input type="text" id="maalSupplier" placeholder="Supplier / Agency" />
           </div>
           <div class="form-group">
             <label>Kab Aaya (Date & Time) *</label>
@@ -438,28 +459,25 @@
           </div>
         </div>
 
-        <button class="btn btn-green" onclick="addMaalEntry()">📦 Save Maal Entry</button>
+        <div class="form-row">
+          <button class="btn btn-green" id="btnSaveMaal" onclick="saveMaalEntry()">Save Inward Entry</button>
+          <button class="btn btn-secondary" id="btnCancelMaal" style="display:none;" onclick="cancelEditMaal()">Cancel</button>
+        </div>
       </div>
 
-      <div class="search-box">
-        <input type="text" id="maalSearch" placeholder="🔍 Search Maal, Supplier, or Date..." oninput="renderMaalList()" />
+      <div class="form-group">
+        <input type="text" id="maalSearch" placeholder="🔍 Search Item, Supplier, or Date..." oninput="renderMaalList()" />
       </div>
 
-      <div class="item-list" id="maalListContainer">
-        <!-- Dynamic list -->
-      </div>
+      <div class="item-list" id="maalListContainer"></div>
     </section>
 
-    <!-- TAB 3: SECURITY & SYNC SETTINGS -->
+    <!-- TAB 3: SECURITY & SYNC -->
     <section id="settingsPanel" class="panel">
       <div class="card">
         <div class="card-title">🔐 Master Security Access</div>
-        <p class="sec-notice" style="margin-bottom: 12px;">
-          Enter the Master Passphrase to configure GitHub fast live-sync credentials.
-        </p>
-        
+        <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:12px;">Enter Master Passphrase to access GitHub Sync settings.</p>
         <div class="form-group">
-          <label>Master Passphrase</label>
           <input type="password" id="passphraseInput" placeholder="Enter Master Passphrase" />
         </div>
         <button class="btn btn-primary" onclick="verifyMasterPassphrase()">Unlock Sync Settings</button>
@@ -467,49 +485,45 @@
 
       <div class="card" id="tokenConfigBox" style="display: none;">
         <div class="card-title">⚡ GitHub Fast Live Sync</div>
-        
         <div class="form-group">
           <label>Repository (Hardcoded)</label>
           <input type="text" value="TechsInMyDNA / SUNNY-STORES-MANAGEMENT-SYSTEM" disabled style="opacity: 0.75;" />
         </div>
-
         <div class="form-group">
           <label>GitHub Personal Access Token (PAT)</label>
           <input type="password" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
-          <p class="sec-notice">Token requires repository read & write scope for <code>data.json</code>.</p>
         </div>
-
         <div class="form-row">
-          <button class="btn btn-green" onclick="saveGitHubToken()">Apply & Sync Now</button>
+          <button class="btn btn-green" onclick="saveGitHubToken()">Apply & Sync</button>
           <button class="btn btn-red" onclick="removeGitHubToken()">Disconnect</button>
         </div>
       </div>
 
       <div class="card">
         <div class="card-title">💾 Backup & Manual Data Export</div>
-        <p class="sec-notice" style="margin-bottom: 12px;">Local copy is always safe in your browser storage.</p>
         <button class="btn btn-primary" onclick="exportDataJson()">Download data.json Backup</button>
       </div>
     </section>
   </main>
 
   <script>
-    // HARDCODED REPO CONFIGURATION
+    // HARDCODED REPO CREDENTIALS
     const GH_OWNER = "TechsInMyDNA";
     const GH_REPO = "SUNNY-STORES-MANAGEMENT-SYSTEM";
     const GH_FILE = "data.json";
 
-    // Application State
+    // Application Schema
     let appData = {
-      khata: [],
-      maal: [],
+      customers: [], // { id, name, phone, transactions: [ { id, amount, type: 'GIVEN'|'RECEIVED', remarks, date } ] }
+      maal: [],      // { id, item, amount, supplier, dateTime }
       lastUpdated: new Date().toISOString()
     };
 
+    let activeCustomerId = null;
     let ghSha = null;
     let isSyncing = false;
 
-    // Obfuscated Security Check (Never exposed directly)
+    // Security Verification (Obfuscated Passphrase)
     function checkPassphrase(str) {
       const codeSeq = [83,117,110,110,121,83,116,111,114,101,115,64,49,52,52];
       if (str.length !== codeSeq.length) return false;
@@ -521,16 +535,13 @@
 
     // Init App
     window.addEventListener("DOMContentLoaded", () => {
-      // Set current datetime for Maal input
       const now = new Date();
       now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
       document.getElementById("maalDateTime").value = now.toISOString().slice(0, 16);
 
-      // Load Local Storage first
       loadLocal();
       renderAll();
 
-      // Check if GitHub token is present
       const token = localStorage.getItem("ss_gh_token");
       if (token) {
         syncFromGitHub();
@@ -538,13 +549,12 @@
         updateSyncBadge("local", "Local Only");
       }
 
-      // Online listener
       window.addEventListener("online", () => {
         if (localStorage.getItem("ss_gh_token")) syncToGitHub();
       });
     });
 
-    // Tab Navigation
+    // Tab Switcher
     function switchTab(tabId) {
       document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
       document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
@@ -561,7 +571,7 @@
       }
     }
 
-    // Master Passphrase Handler
+    // Master Passphrase & Token
     function verifyMasterPassphrase() {
       const pass = document.getElementById("passphraseInput").value.trim();
       if (checkPassphrase(pass)) {
@@ -569,25 +579,22 @@
         const savedToken = localStorage.getItem("ss_gh_token");
         if (savedToken) document.getElementById("ghTokenInput").value = savedToken;
         document.getElementById("passphraseInput").value = "";
-        alert("Access Granted: GitHub Sync Settings Unlocked.");
+        alert("Unlocked: You can configure GitHub live sync token.");
       } else {
-        alert("Invalid Master Passphrase!");
+        alert("Incorrect Master Passphrase!");
       }
     }
 
     function saveGitHubToken() {
       const token = document.getElementById("ghTokenInput").value.trim();
-      if (!token) {
-        alert("Please enter a valid token.");
-        return;
-      }
+      if (!token) return alert("Enter a valid token.");
       localStorage.setItem("ss_gh_token", token);
-      alert("Token Saved! Starting live sync...");
+      alert("Token saved. Starting sync...");
       syncFromGitHub();
     }
 
     function removeGitHubToken() {
-      if (confirm("Disconnect GitHub Sync? Data will remain stored locally.")) {
+      if (confirm("Disconnect GitHub Sync?")) {
         localStorage.removeItem("ss_gh_token");
         document.getElementById("ghTokenInput").value = "";
         document.getElementById("tokenConfigBox").style.display = "none";
@@ -595,7 +602,7 @@
       }
     }
 
-    // Local Data Operations
+    // Local Storage & Cloud Auto Sync
     function saveLocal() {
       appData.lastUpdated = new Date().toISOString();
       localStorage.setItem("ss_data", JSON.stringify(appData));
@@ -607,20 +614,43 @@
       const local = localStorage.getItem("ss_data");
       if (local) {
         try {
-          appData = JSON.parse(local);
+          const parsed = JSON.parse(local);
+          // Migration support from flat khata structure if present
+          if (parsed.khata && !parsed.customers) {
+            parsed.customers = [];
+            parsed.khata.forEach(k => {
+              let cust = parsed.customers.find(c => c.name.toLowerCase() === k.name.toLowerCase());
+              if (!cust) {
+                cust = { id: "CUST_" + Math.random().toString(36).substr(2, 9), name: k.name, phone: k.phone || "", transactions: [] };
+                parsed.customers.push(cust);
+              }
+              cust.transactions.push({
+                id: k.id,
+                amount: k.amount,
+                type: k.type === "UDHAR" ? "GIVEN" : "RECEIVED",
+                remarks: k.remarks,
+                date: k.date
+              });
+            });
+            delete parsed.khata;
+          }
+          appData = {
+            customers: parsed.customers || [],
+            maal: parsed.maal || [],
+            lastUpdated: parsed.lastUpdated || new Date().toISOString()
+          };
         } catch (e) {
           console.error("Local parse error", e);
         }
       }
     }
 
-    // GitHub Live Sync (No Push/Pull Button Required)
     function triggerAutoSync() {
       const token = localStorage.getItem("ss_gh_token");
       if (token && navigator.onLine) {
         syncToGitHub();
       } else if (!navigator.onLine) {
-        updateSyncBadge("offline", "Offline (Saved Local)");
+        updateSyncBadge("offline", "Offline (Saved Locally)");
       }
     }
 
@@ -633,10 +663,7 @@
 
       try {
         const res = await fetch(url, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Accept": "application/vnd.github.v3+json"
-          }
+          headers: { "Authorization": `Bearer ${token}`, "Accept": "application/vnd.github.v3+json" }
         });
 
         if (res.status === 200) {
@@ -645,25 +672,21 @@
           const content = decodeURIComponent(escape(atob(fileData.content)));
           const remoteJson = JSON.parse(content);
 
-          // Conflict resolution: prefer newer update
           if (!appData.lastUpdated || new Date(remoteJson.lastUpdated) >= new Date(appData.lastUpdated)) {
             appData = remoteJson;
             localStorage.setItem("ss_data", JSON.stringify(appData));
             renderAll();
           } else {
-            // Local is newer: push to remote
             await syncToGitHub();
             return;
           }
           updateSyncBadge("synced", "⚡ Live Synced");
         } else if (res.status === 404) {
-          // File does not exist yet; push local
           await syncToGitHub();
         } else {
           updateSyncBadge("offline", "Auth Error");
         }
       } catch (err) {
-        console.error("Fetch error", err);
         updateSyncBadge("offline", "Local Only");
       }
     }
@@ -673,14 +696,13 @@
       if (!token || isSyncing) return;
 
       isSyncing = true;
-      updateSyncBadge("syncing", "Saving to Cloud...");
+      updateSyncBadge("syncing", "Live Saving...");
 
       const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
       const jsonStr = JSON.stringify(appData, null, 2);
       const encodedContent = btoa(unescape(encodeURIComponent(jsonStr)));
 
       try {
-        // Fetch current sha if missing
         if (!ghSha) {
           const checkRes = await fetch(url, {
             headers: { "Authorization": `Bearer ${token}`, "Accept": "application/vnd.github.v3+json" }
@@ -713,11 +735,10 @@
           ghSha = resData.content.sha;
           updateSyncBadge("synced", "⚡ Live Synced");
         } else {
-          updateSyncBadge("offline", "Sync Retry Pending");
+          updateSyncBadge("offline", "Pending Sync");
         }
       } catch (err) {
-        console.error("Push error", err);
-        updateSyncBadge("offline", "Saved Local");
+        updateSyncBadge("offline", "Saved Locally");
       } finally {
         isSyncing = false;
       }
@@ -730,164 +751,367 @@
       txt.textContent = text;
     }
 
-    // KHATA (Hisaab Kitaab) Handlers
-    function addKhataEntry() {
-      const name = document.getElementById("custName").value.trim();
-      const phone = document.getElementById("custPhone").value.trim();
-      const amount = parseFloat(document.getElementById("custAmount").value);
-      const type = document.getElementById("custType").value;
-      const remarks = document.getElementById("custRemarks").value.trim();
-      const notify = document.getElementById("directNotifyCheck").checked;
+    // CUSTOMER PROFILE MANAGEMENT
+    function createCustomerProfile() {
+      const name = document.getElementById("newCustName").value.trim();
+      const phone = document.getElementById("newCustPhone").value.trim();
 
-      if (!name || isNaN(amount) || amount <= 0) {
-        alert("Please enter customer name and a valid amount.");
+      if (!name) return alert("Please enter Customer Name.");
+
+      const existing = appData.customers.find(c => c.name.toLowerCase() === name.toLowerCase());
+      if (existing) {
+        alert("Customer already exists with this name!");
+        openCustomerProfile(existing.id);
         return;
       }
 
-      const entry = {
-        id: "KH_" + Date.now(),
+      const newCustomer = {
+        id: "CUST_" + Date.now(),
         name,
         phone,
-        amount,
-        type,
-        remarks,
-        date: new Date().toISOString()
+        transactions: []
       };
 
-      appData.khata.unshift(entry);
+      appData.customers.unshift(newCustomer);
       saveLocal();
 
-      // Reset Form
-      document.getElementById("custName").value = "";
-      document.getElementById("custPhone").value = "";
-      document.getElementById("custAmount").value = "";
-      document.getElementById("custRemarks").value = "";
-
-      if (notify && phone) {
-        sendNotification(entry, "wa");
-      }
+      document.getElementById("newCustName").value = "";
+      document.getElementById("newCustPhone").value = "";
+      openCustomerProfile(newCustomer.id);
     }
 
-    function deleteKhataEntry(id) {
-      if (confirm("Delete this Hisaab record?")) {
-        appData.khata = appData.khata.filter(e => e.id !== id);
+    function openCustomerProfile(custId) {
+      activeCustomerId = custId;
+      document.getElementById("customerDirectoryView").style.display = "none";
+      document.getElementById("customerDetailView").style.display = "block";
+      cancelEditTransaction();
+      renderCustomerDetail();
+    }
+
+    function closeCustomerProfile() {
+      activeCustomerId = null;
+      document.getElementById("customerDetailView").style.display = "none";
+      document.getElementById("customerDirectoryView").style.display = "block";
+      renderCustomerDirectory();
+    }
+
+    function deleteCustomerProfile(custId, e) {
+      e.stopPropagation();
+      if (confirm("Delete this customer and all their ledger history?")) {
+        appData.customers = appData.customers.filter(c => c.id !== custId);
         saveLocal();
+        if (activeCustomerId === custId) closeCustomerProfile();
       }
     }
 
-    // MAAL INWARD Handlers
-    function addMaalEntry() {
+    // CUSTOMER LEDGER TRANSACTIONS (Add / Edit / Delete)
+    function saveTransaction() {
+      const cust = appData.customers.find(c => c.id === activeCustomerId);
+      if (!cust) return;
+
+      const editId = document.getElementById("txEditId").value;
+      const amount = parseFloat(document.getElementById("txAmount").value);
+      const type = document.getElementById("txType").value;
+      const remarks = document.getElementById("txRemarks").value.trim();
+      const sendWa = document.getElementById("chkWhatsApp").checked;
+      const sendSms = document.getElementById("chkSMS").checked;
+
+      if (isNaN(amount) || amount <= 0) return alert("Enter a valid amount.");
+
+      let txObj;
+      if (editId) {
+        // Edit existing
+        txObj = cust.transactions.find(t => t.id === editId);
+        if (txObj) {
+          txObj.amount = amount;
+          txObj.type = type;
+          txObj.remarks = remarks;
+        }
+      } else {
+        // New entry
+        txObj = {
+          id: "TX_" + Date.now(),
+          amount,
+          type,
+          remarks,
+          date: new Date().toISOString()
+        };
+        cust.transactions.unshift(txObj);
+      }
+
+      saveLocal();
+      renderCustomerDetail();
+
+      // Trigger alerts if checked
+      if (sendWa && cust.phone) sendTransactionAlert(cust, txObj, "wa");
+      if (sendSms && cust.phone) sendTransactionAlert(cust, txObj, "sms");
+
+      cancelEditTransaction();
+    }
+
+    function editTransaction(txId) {
+      const cust = appData.customers.find(c => c.id === activeCustomerId);
+      const tx = cust.transactions.find(t => t.id === txId);
+      if (!tx) return;
+
+      document.getElementById("txEditId").value = tx.id;
+      document.getElementById("txAmount").value = tx.amount;
+      document.getElementById("txType").value = tx.type;
+      document.getElementById("txRemarks").value = tx.remarks || "";
+      document.getElementById("txFormTitle").textContent = "✏️ Edit Transaction";
+      document.getElementById("btnSaveTx").textContent = "Update Transaction";
+      document.getElementById("btnCancelTx").style.display = "block";
+    }
+
+    function cancelEditTransaction() {
+      document.getElementById("txEditId").value = "";
+      document.getElementById("txAmount").value = "";
+      document.getElementById("txRemarks").value = "";
+      document.getElementById("chkWhatsApp").checked = false;
+      document.getElementById("chkSMS").checked = false;
+      document.getElementById("txFormTitle").textContent = "Record Transaction";
+      document.getElementById("btnSaveTx").textContent = "Save Transaction";
+      document.getElementById("btnCancelTx").style.display = "none";
+    }
+
+    function deleteTransaction(txId) {
+      if (confirm("Delete this transaction entry?")) {
+        const cust = appData.customers.find(c => c.id === activeCustomerId);
+        if (cust) {
+          cust.transactions = cust.transactions.filter(t => t.id !== txId);
+          saveLocal();
+          renderCustomerDetail();
+        }
+      }
+    }
+
+    // ALERTS & REMINDERS (WhatsApp / SMS)
+    function sendTransactionAlert(cust, tx, channel) {
+      const isGiven = tx.type === "GIVEN";
+      const msg = `*SUNNY STORES - Hisaab Update*\nNamaste ${cust.name},\nAapke khate me naya entry darj hua hai:\n- Type: ${isGiven ? 'Given (Udhar / Baki)' : 'Received (Jama)'}\n- Rakam: ₹${tx.amount.toLocaleString()}\n- Vivaran: ${tx.remarks || 'Standard Transaction'}\n- Date: ${new Date(tx.date).toLocaleDateString()}\nDhanyawad! - Sunny Stores`;
+
+      dispatchMsg(cust.phone, msg, channel);
+    }
+
+    function sendLedgerReminder(channel) {
+      const cust = appData.customers.find(c => c.id === activeCustomerId);
+      if (!cust) return;
+      if (!cust.phone) return alert("Customer phone number not available!");
+
+      let given = 0, received = 0;
+      cust.transactions.forEach(t => {
+        if (t.type === "GIVEN") given += t.amount;
+        else received += t.amount;
+      });
+      const balance = given - received;
+
+      if (balance <= 0) return alert("Customer has no pending balance!");
+
+      const msg = `*SUNNY STORES - Reminder*\nNamaste ${cust.name},\nAapka Sunny Stores par kul hisaab ₹${balance.toLocaleString()} baaki hai. Kripya samay anusar bhugtan karein.\nDhanyawad! - Sunny Stores`;
+
+      dispatchMsg(cust.phone, msg, channel);
+    }
+
+    function dispatchMsg(phone, msg, channel) {
+      const cleanPhone = phone.replace(/[^0-9]/g, "");
+      const fullPhone = cleanPhone.length === 10 ? "91" + cleanPhone : cleanPhone;
+
+      if (channel === "wa") {
+        window.open(`https://wa.me/${fullPhone}?text=${encodeURIComponent(msg)}`, "_blank");
+      } else {
+        window.location.href = `sms:${cleanPhone}?body=${encodeURIComponent(msg)}`;
+      }
+    }
+
+    // MAAL INWARD (Edit, Delete, Autocomplete Duplication Prevention)
+    function saveMaalEntry() {
+      const editId = document.getElementById("maalEditId").value;
       const item = document.getElementById("maalItem").value.trim();
       const amount = parseFloat(document.getElementById("maalAmount").value);
       const supplier = document.getElementById("maalSupplier").value.trim();
       const dateTime = document.getElementById("maalDateTime").value;
 
       if (!item || isNaN(amount) || !supplier || !dateTime) {
-        alert("Please fill all Maal Inward fields properly.");
-        return;
+        return alert("Please fill all Maal Inward fields properly.");
       }
 
-      const entry = {
-        id: "ML_" + Date.now(),
-        item,
-        amount,
-        supplier,
-        dateTime: new Date(dateTime).toISOString()
-      };
+      if (editId) {
+        const m = appData.maal.find(x => x.id === editId);
+        if (m) {
+          m.item = item;
+          m.amount = amount;
+          m.supplier = supplier;
+          m.dateTime = new Date(dateTime).toISOString();
+        }
+      } else {
+        const entry = {
+          id: "ML_" + Date.now(),
+          item,
+          amount,
+          supplier,
+          dateTime: new Date(dateTime).toISOString()
+        };
+        appData.maal.unshift(entry);
+      }
 
-      appData.maal.unshift(entry);
       saveLocal();
+      cancelEditMaal();
+    }
 
-      // Reset
+    function editMaal(id) {
+      const m = appData.maal.find(x => x.id === id);
+      if (!m) return;
+
+      document.getElementById("maalEditId").value = m.id;
+      document.getElementById("maalItem").value = m.item;
+      document.getElementById("maalAmount").value = m.amount;
+      document.getElementById("maalSupplier").value = m.supplier;
+      document.getElementById("maalDateTime").value = new Date(m.dateTime).toISOString().slice(0, 16);
+
+      document.getElementById("maalFormTitle").textContent = "✏️ Edit Maal Entry";
+      document.getElementById("btnSaveMaal").textContent = "Update Entry";
+      document.getElementById("btnCancelMaal").style.display = "block";
+    }
+
+    function cancelEditMaal() {
+      document.getElementById("maalEditId").value = "";
       document.getElementById("maalItem").value = "";
       document.getElementById("maalAmount").value = "";
       document.getElementById("maalSupplier").value = "";
+      document.getElementById("maalFormTitle").textContent = "📦 New Maal Aawam (Stock Inward)";
+      document.getElementById("btnSaveMaal").textContent = "Save Inward Entry";
+      document.getElementById("btnCancelMaal").style.display = "none";
     }
 
     function deleteMaalEntry(id) {
-      if (confirm("Delete this Maal Inward entry?")) {
+      if (confirm("Delete this Maal Inward record?")) {
         appData.maal = appData.maal.filter(e => e.id !== id);
         saveLocal();
       }
     }
 
-    // NOTIFICATIONS (WhatsApp & SMS)
-    function sendNotification(entry, channel) {
-      const typeText = entry.type === "UDHAR" ? "Baki / Udhar" : "Jama (Received)";
-      const msg = `*SUNNY STORES - Hisaab Update*\nNamaste ${entry.name},\nAapka record update hua hai:\n- Type: ${typeText}\n- Rakam: ₹${entry.amount}\n- Note: ${entry.remarks || 'Standard Transaction'}\n- Date: ${new Date(entry.date).toLocaleDateString()}\nDhanyawad! - Sunny Stores`;
-      
-      const cleanPhone = entry.phone ? entry.phone.replace(/[^0-9]/g, "") : "";
-      if (!cleanPhone) {
-        alert("Mobile number is not provided for this customer.");
-        return;
-      }
-
-      const phoneWithCode = cleanPhone.length === 10 ? "91" + cleanPhone : cleanPhone;
-
-      if (channel === "wa") {
-        const waUrl = `https://wa.me/${phoneWithCode}?text=${encodeURIComponent(msg)}`;
-        window.open(waUrl, "_blank");
-      } else {
-        const smsUrl = `sms:${cleanPhone}?body=${encodeURIComponent(msg)}`;
-        window.location.href = smsUrl;
-      }
+    // UPDATE ITEM AUTOCOMPLETE LIST
+    function updateItemDatalist() {
+      const datalist = document.getElementById("itemListSuggestions");
+      datalist.innerHTML = "";
+      // Unique item names
+      const uniqueItems = [...new Set(appData.maal.map(m => m.item.trim()))];
+      uniqueItems.forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item;
+        datalist.appendChild(opt);
+      });
     }
 
     // RENDER FUNCTIONS
     function renderAll() {
-      renderKhataList();
+      renderCustomerDirectory();
       renderMaalList();
+      updateItemDatalist();
+      if (activeCustomerId) renderCustomerDetail();
     }
 
-    function renderKhataList() {
-      const container = document.getElementById("khataListContainer");
-      const search = (document.getElementById("khataSearch").value || "").toLowerCase();
-      container.innerHTML = "";
+    function renderCustomerDirectory() {
+      const listContainer = document.getElementById("customerDirectoryList");
+      const search = (document.getElementById("custSearch").value || "").toLowerCase();
+      listContainer.innerHTML = "";
 
-      let totalUdhar = 0;
-      let totalJama = 0;
+      let marketTotalBaki = 0;
 
-      const filtered = appData.khata.filter(e => {
-        if (e.type === "UDHAR") totalUdhar += e.amount;
-        if (e.type === "JAMA") totalJama += e.amount;
+      const filtered = appData.customers.filter(c => {
+        let given = 0, received = 0;
+        c.transactions.forEach(t => {
+          if (t.type === "GIVEN") given += t.amount;
+          else received += t.amount;
+        });
+        c.balance = given - received;
+        if (c.balance > 0) marketTotalBaki += c.balance;
 
-        return (
-          e.name.toLowerCase().includes(search) ||
-          (e.phone && e.phone.includes(search)) ||
-          (e.remarks && e.remarks.toLowerCase().includes(search))
-        );
+        return c.name.toLowerCase().includes(search) || (c.phone && c.phone.includes(search));
       });
 
-      // Update Top Stats
-      document.getElementById("statTotalUdhar").textContent = "₹" + totalUdhar.toLocaleString();
-      document.getElementById("statTotalJama").textContent = "₹" + totalJama.toLocaleString();
-      const net = totalUdhar - totalJama;
-      const netEl = document.getElementById("statNetKhata");
-      netEl.textContent = "₹" + net.toLocaleString();
-      netEl.className = "stat-value " + (net > 0 ? "red" : "green");
+      document.getElementById("statNetBaki").textContent = "₹" + marketTotalBaki.toLocaleString();
+      document.getElementById("statCustCount").textContent = appData.customers.length;
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Koi hisaab record nahi mila.</div>`;
+        listContainer.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Koi customer profile nahi mili.</div>`;
         return;
       }
 
-      filtered.forEach(item => {
-        const dateStr = new Date(item.date).toLocaleDateString("en-IN", { day: 'numeric', month: 'short', year: 'numeric' });
-        const isUdhar = item.type === "UDHAR";
+      filtered.forEach(cust => {
+        const div = document.createElement("div");
+        div.className = "list-item";
+        div.onclick = () => openCustomerProfile(cust.id);
+
+        div.innerHTML = `
+          <div class="item-info">
+            <div class="item-primary">${cust.name}</div>
+            <div class="item-secondary">${cust.phone ? '📞 ' + cust.phone : 'No Phone'} | ${cust.transactions.length} Entries</div>
+          </div>
+          <div style="text-align:right; margin-right: 8px;">
+            <div style="font-weight:700; font-size:1rem; color:${cust.balance > 0 ? 'var(--accent-red)' : (cust.balance < 0 ? 'var(--accent-green)' : 'var(--text-muted)')}">
+              ${cust.balance > 0 ? '₹' + cust.balance.toLocaleString() + ' Baki' : (cust.balance < 0 ? '₹' + Math.abs(cust.balance).toLocaleString() + ' Adv' : '₹0')}
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="action-icon-btn del" onclick="deleteCustomerProfile('${cust.id}', event)">✕</button>
+          </div>
+        `;
+        listContainer.appendChild(div);
+      });
+    }
+
+    function renderCustomerDetail() {
+      const cust = appData.customers.find(c => c.id === activeCustomerId);
+      if (!cust) return;
+
+      document.getElementById("profileName").textContent = cust.name;
+      document.getElementById("profilePhone").textContent = cust.phone ? "📞 " + cust.phone : "No Mobile Number";
+
+      let given = 0, received = 0;
+      cust.transactions.forEach(t => {
+        if (t.type === "GIVEN") given += t.amount;
+        else received += t.amount;
+      });
+      const balance = given - received;
+
+      const balEl = document.getElementById("profileNetBalance");
+      if (balance > 0) {
+        balEl.textContent = `₹${balance.toLocaleString()} (Udhar / Baki)`;
+        balEl.style.color = "var(--accent-red)";
+      } else if (balance < 0) {
+        balEl.textContent = `₹${Math.abs(balance).toLocaleString()} (Advance)`;
+        balEl.style.color = "var(--accent-green)";
+      } else {
+        balEl.textContent = "₹0 (Hisaab Chutta)";
+        balEl.style.color = "var(--text-muted)";
+      }
+
+      const container = document.getElementById("profileTxList");
+      container.innerHTML = "";
+
+      if (cust.transactions.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Koi hisaab entry nahi hai.</div>`;
+        return;
+      }
+
+      cust.transactions.forEach(tx => {
+        const isGiven = tx.type === "GIVEN";
+        const dateStr = new Date(tx.date).toLocaleDateString("en-IN", { day: 'numeric', month: 'short', year: 'numeric' });
 
         const div = document.createElement("div");
         div.className = "list-item";
+        div.style.cursor = "default";
         div.innerHTML = `
           <div class="item-info">
-            <div class="item-primary">${item.name} <span style="font-size:0.75rem; color:${isUdhar ? 'var(--accent-red)' : 'var(--accent-green)'}">● ${item.type}</span></div>
-            <div class="item-secondary">${item.phone ? '📞 ' + item.phone + ' | ' : ''}₹${item.amount.toLocaleString()} ${item.remarks ? '| ' + item.remarks : ''} (${dateStr})</div>
+            <div class="item-primary" style="color: ${isGiven ? 'var(--accent-red)' : 'var(--accent-green)'}">
+              ${isGiven ? 'Given (Diya / Udhar)' : 'Received (Liya / Jama)'} - ₹${tx.amount.toLocaleString()}
+            </div>
+            <div class="item-secondary">${dateStr} ${tx.remarks ? ' | ' + tx.remarks : ''}</div>
           </div>
           <div class="item-actions">
-            ${item.phone ? `
-              <button class="action-icon-btn wa" title="WhatsApp" onclick='sendNotification(${JSON.stringify(item)}, "wa")'>WA</button>
-              <button class="action-icon-btn sms" title="SMS" onclick='sendNotification(${JSON.stringify(item)}, "sms")'>SMS</button>
-            ` : ''}
-            <button class="action-icon-btn del" title="Delete" onclick="deleteKhataEntry('${item.id}')">✕</button>
+            <button class="action-icon-btn edit" onclick="editTransaction('${tx.id}')">✏️</button>
+            <button class="action-icon-btn del" onclick="deleteTransaction('${tx.id}')">✕</button>
           </div>
         `;
         container.appendChild(div);
@@ -899,20 +1123,17 @@
       const search = (document.getElementById("maalSearch").value || "").toLowerCase();
       container.innerHTML = "";
 
-      let totalStockCost = 0;
-      const filtered = appData.maal.filter(e => {
-        totalStockCost += e.amount;
-        return (
-          e.item.toLowerCase().includes(search) ||
-          e.supplier.toLowerCase().includes(search)
-        );
+      let totalCost = 0;
+      const filtered = appData.maal.filter(m => {
+        totalCost += m.amount;
+        return m.item.toLowerCase().includes(search) || m.supplier.toLowerCase().includes(search);
       });
 
-      document.getElementById("statTotalStock").textContent = "₹" + totalStockCost.toLocaleString();
+      document.getElementById("statTotalStock").textContent = "₹" + totalCost.toLocaleString();
       document.getElementById("statStockCount").textContent = appData.maal.length;
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Koi Maal record nahi mila.</div>`;
+        container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Koi Maal entry nahi mili.</div>`;
         return;
       }
 
@@ -922,6 +1143,7 @@
 
         const div = document.createElement("div");
         div.className = "list-item";
+        div.style.cursor = "default";
         div.innerHTML = `
           <div class="item-info">
             <div class="item-primary">${entry.item}</div>
@@ -931,6 +1153,7 @@
             ₹${entry.amount.toLocaleString()}
           </div>
           <div class="item-actions">
+            <button class="action-icon-btn edit" title="Edit" onclick="editMaal('${entry.id}')">✏️</button>
             <button class="action-icon-btn del" title="Delete" onclick="deleteMaalEntry('${entry.id}')">✕</button>
           </div>
         `;
@@ -938,7 +1161,6 @@
       });
     }
 
-    // Manual Backup
     function exportDataJson() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
       const downloadAnchor = document.createElement("a");
