@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Sunny Stores Management System</title>
+  <title>Sunny Stores - OkCredit Ledger & Inbuilt Calculator</title>
   <style>
     :root {
-      --bg-main: #0f172a;
-      --bg-card: #1e293b;
-      --bg-subtle: #334155;
+      --bg-base: #0b131f;
+      --bg-surface: #152238;
+      --bg-card: #1c2d4a;
+      --bg-input: #0f1a2c;
       --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent-green: #10b981;
-      --accent-red: #ef4444;
-      --accent-blue: #38bdf8;
-      --accent-amber: #f59e0b;
-      --border-color: #334155;
-      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      --text-sub: #94a3b8;
+      --border-subtle: #243859;
+      --ok-red: #ef4444;
+      --ok-green: #10b981;
+      --ok-blue: #38bdf8;
+      --accent-yellow: #f59e0b;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     * {
@@ -28,648 +29,1024 @@
     }
 
     body {
-      background-color: var(--bg-main);
+      background-color: var(--bg-base);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
-    /* Top Bar */
-    header {
-      background-color: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
+    /* Top Nav */
+    .top-nav {
+      background: var(--bg-surface);
       padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 40;
     }
 
-    .brand-title {
-      font-size: 1.05rem;
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #10b981, #0284c7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .brand-text {
+      font-size: 1rem;
       font-weight: 700;
       letter-spacing: 0.5px;
     }
 
-    .sync-badge {
-      display: flex;
+    .sync-status {
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
       padding: 4px 10px;
-      border-radius: 999px;
-      background: var(--bg-subtle);
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
     }
 
     .sync-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background-color: var(--accent-amber);
+      background: var(--accent-yellow);
     }
-    .sync-dot.synced { background-color: var(--accent-green); }
-    .sync-dot.syncing { background-color: var(--accent-blue); animation: pulse 1s infinite; }
-    .sync-dot.offline { background-color: var(--accent-red); }
+    .sync-dot.synced { background: var(--ok-green); }
+    .sync-dot.syncing { background: var(--ok-blue); animation: spinPulse 1s infinite; }
+    .sync-dot.offline { background: var(--ok-red); }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+    @keyframes spinPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
     }
 
-    /* Tabs */
-    .tab-bar {
+    /* Category Tabs */
+    .nav-tabs {
       display: flex;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
     }
 
-    .tab-btn {
+    .nav-tab-btn {
       flex: 1;
-      padding: 12px 8px;
+      padding: 12px 6px;
       text-align: center;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      color: var(--text-muted);
+      color: var(--text-sub);
       background: none;
       border: none;
-      border-bottom: 2px solid transparent;
+      border-bottom: 2.5px solid transparent;
       cursor: pointer;
     }
 
-    .tab-btn.active {
-      color: var(--accent-blue);
-      border-bottom-color: var(--accent-blue);
+    .nav-tab-btn.active {
+      color: var(--ok-blue);
+      border-bottom-color: var(--ok-blue);
     }
 
+    /* Main Container */
     main {
       flex: 1;
-      max-width: 900px;
+      max-width: 680px;
       width: 100%;
       margin: 0 auto;
-      padding: 14px;
+      padding: 12px 14px 80px 14px;
     }
 
-    .panel { display: none; }
-    .panel.active { display: block; }
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
 
-    /* Stats Grid */
-    .stats-grid {
+    /* Summary Card */
+    .ok-summary-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px 16px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
-      margin-bottom: 16px;
+      grid-template-columns: 1fr 1fr;
+      margin-bottom: 14px;
+      position: relative;
     }
 
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px;
+    .ok-summary-card::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 15%;
+      bottom: 15%;
+      width: 1px;
+      background: var(--border-subtle);
     }
 
-    .stat-label {
+    .ok-sub-box {
+      text-align: center;
+      padding: 4px;
+    }
+
+    .ok-sub-title {
       font-size: 0.72rem;
-      color: var(--text-muted);
+      color: var(--text-sub);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-weight: 600;
     }
 
-    .stat-value {
-      font-size: 1.15rem;
-      font-weight: 700;
+    .ok-sub-val {
+      font-size: 1.25rem;
+      font-weight: 800;
       margin-top: 4px;
     }
-    .stat-value.green { color: var(--accent-green); }
-    .stat-value.red { color: var(--accent-red); }
-    .stat-value.blue { color: var(--accent-blue); }
+    .ok-sub-val.red { color: var(--ok-red); }
+    .ok-sub-val.green { color: var(--ok-green); }
 
-    /* Card */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
-    .card-title {
+    .search-input {
+      flex: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      color: var(--text-main);
+      outline: none;
+    }
+    .search-input:focus { border-color: var(--ok-blue); }
+
+    .btn-create-round {
+      background: var(--ok-blue);
+      border: none;
+      color: #0b131f;
+      font-weight: 700;
+      font-size: 0.82rem;
+      border-radius: 8px;
+      padding: 0 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    /* Feed List */
+    .feed-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cust-feed-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .cust-feed-item:active { background: var(--bg-card); }
+
+    .cust-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--border-subtle);
+      color: var(--ok-blue);
+      font-weight: 700;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .cust-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cust-name {
       font-size: 0.95rem;
       font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cust-subtext {
+      font-size: 0.72rem;
+      color: var(--text-sub);
+      margin-top: 3px;
+    }
+
+    .cust-amount-box {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .cust-amount-val {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .cust-amount-val.due { color: var(--ok-red); }
+    .cust-amount-val.adv { color: var(--ok-green); }
+    .cust-amount-val.settled { color: var(--text-sub); }
+
+    .cust-amount-label {
+      font-size: 0.68rem;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    /* Customer Ledger */
+    .profile-header-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
       margin-bottom: 12px;
+    }
+
+    .profile-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .form-group { margin-bottom: 12px; }
-    .form-row {
+    .btn-back {
+      background: none;
+      border: none;
+      color: var(--text-sub);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 0;
+      font-weight: 600;
+    }
+
+    .profile-mid-row {
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .profile-meta-name { font-size: 1.15rem; font-weight: 700; }
+    .profile-meta-phone { font-size: 0.78rem; color: var(--text-sub); margin-top: 2px; }
+    .profile-balance-badge { text-align: right; }
+    .profile-balance-num { font-size: 1.35rem; font-weight: 800; }
+
+    .profile-actions-bar {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
     }
+
+    .btn-quick-notify {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-quick-notify.wa { color: #34d399; }
+    .btn-quick-notify.sms { color: #60a5fa; }
+
+    /* Timeline */
+    .ledger-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .tx-row {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+    .tx-row.given { border-left: 4px solid var(--ok-red); }
+    .tx-row.received { border-left: 4px solid var(--ok-green); }
+
+    .tx-details { flex: 1; min-width: 0; }
+    .tx-date { font-size: 0.72rem; color: var(--text-sub); }
+    .tx-note { font-size: 0.85rem; color: var(--text-main); margin-top: 2px; }
+
+    .tx-amount-col { text-align: right; margin-right: 10px; }
+    .tx-num { font-size: 1.05rem; font-weight: 700; }
+    .tx-num.red { color: var(--ok-red); }
+    .tx-num.green { color: var(--ok-green); }
+    .tx-tag { font-size: 0.68rem; color: var(--text-sub); }
+
+    .tx-ctrls { display: flex; gap: 4px; }
+    .btn-mini {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-sub);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      cursor: pointer;
+    }
+
+    /* Sticky Bottom Buttons */
+    .ok-bottom-sticky-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      padding: 10px 16px;
+      display: flex;
+      gap: 12px;
+      max-width: 680px;
+      margin: 0 auto;
+      z-index: 30;
+    }
+
+    .btn-give {
+      flex: 1;
+      background: var(--ok-red);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-receive {
+      flex: 1;
+      background: var(--ok-green);
+      color: #0b131f;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* Modal / Bottom Sheet */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(2px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-sheet {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      width: 100%;
+      max-width: 680px;
+      padding: 20px 18px 28px 18px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .sheet-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sheet-close {
+      background: none;
+      border: none;
+      color: var(--text-sub);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .form-group { margin-bottom: 12px; }
 
     label {
       display: block;
-      font-size: 0.78rem;
-      color: var(--text-muted);
+      font-size: 0.76rem;
+      color: var(--text-sub);
       margin-bottom: 5px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .input-with-calc {
+      display: flex;
+      gap: 6px;
     }
 
     input, select, textarea {
       width: 100%;
-      background: var(--bg-main);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 10px 12px;
-      font-size: 0.9rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 11px 12px;
+      font-size: 0.95rem;
       color: var(--text-main);
       outline: none;
     }
+    input:focus, select:focus { border-color: var(--ok-blue); }
 
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--accent-blue);
+    .btn-calc-trigger {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--ok-blue);
+      font-size: 1.15rem;
+      padding: 0 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    .checkbox-bar {
+    .check-row {
       display: flex;
       gap: 16px;
-      margin: 12px 0;
-      padding: 8px 12px;
-      background: var(--bg-main);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
+      margin: 14px 0;
+      padding: 10px 12px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
     }
 
-    .checkbox-label {
+    .check-item {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-size: 0.82rem;
-      color: var(--text-muted);
       cursor: pointer;
+      color: var(--text-sub);
+    }
+    .check-item input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--ok-blue);
     }
 
-    .checkbox-label input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      accent-color: var(--accent-blue);
-    }
-
-    .btn {
+    .btn-submit {
       width: 100%;
-      padding: 11px;
-      border-radius: 6px;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
       border: none;
-      font-size: 0.9rem;
-      font-weight: 600;
       cursor: pointer;
+      background: var(--ok-blue);
+      color: #0b131f;
+    }
+    .btn-submit.give { background: var(--ok-red); color: #fff; }
+    .btn-submit.got { background: var(--ok-green); color: #0b131f; }
+
+    /* Calculator Component */
+    .calc-container {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px;
+      max-width: 360px;
+      margin: 0 auto;
     }
 
-    .btn-primary { background: var(--accent-blue); color: #0b1120; }
-    .btn-green { background: var(--accent-green); color: #0b1120; }
-    .btn-red { background: var(--accent-red); color: #ffffff; }
-    .btn-secondary { background: var(--bg-subtle); color: var(--text-main); }
+    .calc-screen {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: right;
+      margin-bottom: 12px;
+    }
 
-    .item-list {
-      display: flex;
-      flex-direction: column;
+    .calc-expression {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      min-height: 18px;
+      overflow-x: auto;
+    }
+
+    .calc-result {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--ok-blue);
+      overflow-x: auto;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px;
     }
 
-    .list-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
+    .calc-key {
+      padding: 14px;
       border-radius: 8px;
-      padding: 12px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+    }
+    .calc-key:active { background: var(--border-subtle); }
+    .calc-key.op { color: var(--ok-blue); background: var(--bg-card); }
+    .calc-key.danger { color: var(--ok-red); }
+    .calc-key.equal { background: var(--ok-green); color: #0b131f; }
+
+    /* Maal Item */
+    .maal-item-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      cursor: pointer;
-    }
-
-    .list-item:hover {
-      border-color: var(--accent-blue);
-    }
-
-    .item-info { flex: 1; min-width: 0; }
-    .item-primary { font-size: 0.92rem; font-weight: 600; color: var(--text-main); }
-    .item-secondary { font-size: 0.75rem; color: var(--text-muted); margin-top: 3px; }
-
-    .action-icon-btn {
-      background: var(--bg-subtle);
-      border: none;
-      color: var(--text-main);
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .action-icon-btn.wa { background: #065f46; color: #6ee7b7; }
-    .action-icon-btn.sms { background: #1e3a8a; color: #93c5fd; }
-    .action-icon-btn.del { background: #450a0a; color: #fca5a5; }
-    .action-icon-btn.edit { background: #3b2a05; color: #fde047; }
-
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 100;
-    }
-    .modal-overlay.active { display: flex; }
-    .modal-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      max-width: 500px;
-      width: 100%;
-      padding: 18px;
-      max-height: 90vh;
-      overflow-y: auto;
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="brand-title">SUNNY STORES</div>
-    <div class="sync-badge">
+  <!-- Top Nav -->
+  <nav class="top-nav">
+    <div class="brand-box">
+      <div class="brand-logo">S</div>
+      <div class="brand-text">SUNNY STORES</div>
+    </div>
+    <div class="sync-status">
       <span class="sync-dot" id="syncDot"></span>
       <span id="syncText">Local Only</span>
     </div>
-  </header>
-
-  <nav class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('khata')">📒 Customers (Khata)</button>
-    <button class="tab-btn" onclick="switchTab('maal')">📦 Maal Inward</button>
-    <button class="tab-btn" onclick="switchTab('settings')">⚙️ Security & Sync</button>
   </nav>
 
+  <!-- Category Tabs -->
+  <div class="nav-tabs">
+    <button class="nav-tab-btn active" onclick="switchNavTab('khata')">👥 Customers</button>
+    <button class="nav-tab-btn" onclick="switchNavTab('maal')">📦 Maal Inward</button>
+    <button class="nav-tab-btn" onclick="switchNavTab('calculator')">🧮 Calculator</button>
+    <button class="nav-tab-btn" onclick="switchNavTab('settings')">⚙️ Settings</button>
+  </div>
+
   <main>
-    <!-- TAB 1: KHATA CUSTOMER DIRECTORY -->
-    <section id="khataPanel" class="panel active">
-      <div id="customerDirectoryView">
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Net Udhar (Market Baki)</div>
-            <div class="stat-value red" id="statNetBaki">₹0</div>
+    <!-- TAB 1: OKCREDIT CUSTOMER DIRECTORY -->
+    <section id="khataView" class="view-panel active">
+      <div id="customerDirectoryContainer">
+        <!-- Dual Net Balances -->
+        <div class="ok-summary-card">
+          <div class="ok-sub-box">
+            <div class="ok-sub-title">Aapko Dena Hai</div>
+            <div class="ok-sub-val green" id="statTotalAdv">₹0</div>
           </div>
-          <div class="stat-card">
-            <div class="stat-label">Total Customers</div>
-            <div class="stat-value blue" id="statCustCount">0</div>
+          <div class="ok-sub-box">
+            <div class="ok-sub-title">Aapko Lena Hai</div>
+            <div class="ok-sub-val red" id="statTotalBaki">₹0</div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-title">➕ Create Customer Profile</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Customer Name *</label>
-              <input type="text" id="newCustName" placeholder="e.g. Ramesh Bhai" />
-            </div>
-            <div class="form-group">
-              <label>Mobile Number</label>
-              <input type="tel" id="newCustPhone" placeholder="10 digit mobile" maxlength="10" />
-            </div>
-          </div>
-          <button class="btn btn-primary" onclick="createCustomerProfile()">Create Profile</button>
+        <!-- Filter & Add Bar -->
+        <div class="filter-bar">
+          <input type="text" class="search-input" id="custSearch" placeholder="🔍 Search Customer or Mobile..." oninput="renderCustomerList()" />
+          <button class="btn-create-round" onclick="openCreateCustomerModal()">+ Add Grahak</button>
         </div>
 
-        <div class="form-group">
-          <input type="text" id="custSearch" placeholder="🔍 Search Customer by name or number..." oninput="renderCustomerDirectory()" />
-        </div>
-
-        <div class="item-list" id="customerDirectoryList"></div>
+        <!-- Customer List Feed -->
+        <div class="feed-list" id="customerFeed"></div>
       </div>
 
-      <!-- CUSTOMER DETAIL PROFILE (LEDGER) VIEW -->
-      <div id="customerDetailView" style="display: none;">
-        <button class="btn btn-secondary" style="margin-bottom: 12px; width: auto; padding: 6px 14px;" onclick="closeCustomerProfile()">← Back to Customers</button>
-
-        <div class="card">
-          <div class="card-title">
+      <!-- OKCREDIT CUSTOMER PROFILE / LEDGER PASSBOOK -->
+      <div id="customerLedgerContainer" style="display: none;">
+        <div class="profile-header-card">
+          <div class="profile-top-row">
+            <button class="btn-back" onclick="closeCustomerLedger()">← All Customers</button>
+            <button class="btn-mini" style="color:var(--ok-red); border-color: rgba(239,68,68,0.3);" onclick="deleteCurrentProfile()">Delete Grahak</button>
+          </div>
+          <div class="profile-mid-row">
             <div>
-              <span id="profileName" style="font-size: 1.1rem; font-weight:700;"></span>
-              <div id="profilePhone" style="font-size: 0.78rem; color: var(--text-muted);"></div>
+              <div class="profile-meta-name" id="profileCustName">---</div>
+              <div class="profile-meta-phone" id="profileCustPhone">---</div>
             </div>
-            <div id="profileNetBalance" style="font-size: 1.1rem; font-weight:700;"></div>
+            <div class="profile-balance-badge">
+              <div class="profile-balance-num" id="profileCustBalance">₹0</div>
+              <div class="cust-amount-label" id="profileCustStatus">Hisaab Clear</div>
+            </div>
           </div>
-          <div style="display:flex; gap:8px; margin-top:8px;">
-            <button class="action-icon-btn wa" onclick="sendLedgerReminder('wa')">📲 WhatsApp Reminder</button>
-            <button class="action-icon-btn sms" onclick="sendLedgerReminder('sms')">💬 SMS Reminder</button>
+          <div class="profile-actions-bar">
+            <button class="btn-quick-notify wa" onclick="sendDirectReminder('wa')">📲 WhatsApp Reminder</button>
+            <button class="btn-quick-notify sms" onclick="sendDirectReminder('sms')">💬 SMS Reminder</button>
           </div>
         </div>
 
-        <!-- Add/Edit Transaction Inside Customer Profile -->
-        <div class="card">
-          <div class="card-title" id="txFormTitle">Record Transaction</div>
-          <input type="hidden" id="txEditId" value="" />
-          <div class="form-row">
-            <div class="form-group">
-              <label>Amount (₹) *</label>
-              <input type="number" id="txAmount" placeholder="Amount ₹" />
-            </div>
-            <div class="form-group">
-              <label>Type *</label>
-              <select id="txType">
-                <option value="GIVEN">GIVEN (Udhar / Diya)</option>
-                <option value="RECEIVED">RECEIVED (Jama / Liya)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Details / Items (Optional)</label>
-            <input type="text" id="txRemarks" placeholder="e.g. 5 Pcs Goods" />
-          </div>
-
-          <!-- DEFAULT CHECKBOXES ARE OFF -->
-          <div class="checkbox-bar">
-            <label class="checkbox-label">
-              <input type="checkbox" id="chkWhatsApp" />
-              <span>WhatsApp Alert</span>
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" id="chkSMS" />
-              <span>SMS Alert</span>
-            </label>
-          </div>
-
-          <div class="form-row">
-            <button class="btn btn-primary" id="btnSaveTx" onclick="saveTransaction()">Save Transaction</button>
-            <button class="btn btn-secondary" id="btnCancelTx" style="display:none;" onclick="cancelEditTransaction()">Cancel</button>
-          </div>
+        <div style="font-size:0.78rem; font-weight:700; color:var(--text-sub); text-transform:uppercase; margin: 12px 4px 6px 4px;">
+          Passbook Statement
         </div>
 
-        <div class="card-title" style="margin-top: 16px;">Ledger History</div>
-        <div class="item-list" id="profileTxList"></div>
+        <!-- Transaction Feed -->
+        <div class="ledger-timeline" id="ledgerTimelineList"></div>
+
+        <!-- Sticky Bottom OkCredit Action Buttons -->
+        <div class="ok-bottom-sticky-bar">
+          <button class="btn-give" onclick="openTxModal('GIVEN')">🔴 MAINE DIYE ₹</button>
+          <button class="btn-receive" onclick="openTxModal('RECEIVED')">🟢 MAINE LIYE ₹</button>
+        </div>
       </div>
     </section>
 
     <!-- TAB 2: MAAL INWARD -->
-    <section id="maalPanel" class="panel">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total Maal Inward (Cost)</div>
-          <div class="stat-value blue" id="statTotalStock">₹0</div>
+    <section id="maalView" class="view-panel">
+      <div class="ok-summary-card">
+        <div class="ok-sub-box">
+          <div class="ok-sub-title">Total Maal Inward</div>
+          <div class="ok-sub-val green" id="statMaalTotalCost">₹0</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Total Shipments In</div>
-          <div class="stat-value green" id="statStockCount">0</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title" id="maalFormTitle">📦 New Maal Aawam (Stock Inward)</div>
-        <input type="hidden" id="maalEditId" value="" />
-        <div class="form-row">
-          <div class="form-group">
-            <label>Kya Maal Aaya (Item Name) *</label>
-            <input type="text" id="maalItem" list="itemListSuggestions" placeholder="Start typing item..." autocomplete="off" />
-            <!-- Suggestion Datalist to avoid duplication -->
-            <datalist id="itemListSuggestions"></datalist>
-          </div>
-          <div class="form-group">
-            <label>Kitne Ka Aaya (₹ Total) *</label>
-            <input type="number" id="maalAmount" placeholder="Amount ₹" />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Kisse Aaya (Supplier / Party) *</label>
-            <input type="text" id="maalSupplier" placeholder="Supplier / Agency" />
-          </div>
-          <div class="form-group">
-            <label>Kab Aaya (Date & Time) *</label>
-            <input type="datetime-local" id="maalDateTime" />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <button class="btn btn-green" id="btnSaveMaal" onclick="saveMaalEntry()">Save Inward Entry</button>
-          <button class="btn btn-secondary" id="btnCancelMaal" style="display:none;" onclick="cancelEditMaal()">Cancel</button>
+        <div class="ok-sub-box">
+          <div class="ok-sub-title">Shipments Count</div>
+          <div class="ok-sub-val red" style="color:var(--ok-blue);" id="statMaalEntries">0</div>
         </div>
       </div>
 
-      <div class="form-group">
-        <input type="text" id="maalSearch" placeholder="🔍 Search Item, Supplier, or Date..." oninput="renderMaalList()" />
+      <div class="filter-bar">
+        <input type="text" class="search-input" id="maalSearch" placeholder="🔍 Search Maal, Supplier, or Date..." oninput="renderMaalList()" />
+        <button class="btn-create-round" onclick="openMaalModal()">+ Add Maal</button>
       </div>
 
-      <div class="item-list" id="maalListContainer"></div>
+      <div id="maalListContainer"></div>
     </section>
 
-    <!-- TAB 3: SECURITY & SYNC -->
-    <section id="settingsPanel" class="panel">
-      <div class="card">
-        <div class="card-title">🔐 Master Security Access</div>
-        <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:12px;">Enter Master Passphrase to access GitHub Sync settings.</p>
+    <!-- TAB 3: STANDALONE CALCULATOR -->
+    <section id="calculatorView" class="view-panel">
+      <div class="profile-header-card" style="text-align: center;">
+        <div style="font-size:1.05rem; font-weight:700;">🧮 Sunny Stores Quick Calculator</div>
+        <div style="font-size:0.75rem; color:var(--text-sub); margin-top:2px;">Fast retail billing, discount, percentage (%) and margin calculations</div>
+      </div>
+      <div class="calc-container" id="standaloneCalcBox"></div>
+    </section>
+
+    <!-- TAB 4: SETTINGS & SYNC -->
+    <section id="settingsView" class="view-panel">
+      <div class="profile-header-card">
+        <div style="font-size:1rem; font-weight:700; margin-bottom:6px;">🔐 Master Security Access</div>
+        <p style="font-size:0.78rem; color:var(--text-sub); margin-bottom:12px;">Enter Master Passphrase to configure GitHub Token settings.</p>
         <div class="form-group">
-          <input type="password" id="passphraseInput" placeholder="Enter Master Passphrase" />
+          <input type="password" id="passInput" placeholder="Master Passphrase" />
         </div>
-        <button class="btn btn-primary" onclick="verifyMasterPassphrase()">Unlock Sync Settings</button>
+        <button class="btn-submit" onclick="verifyPassphrase()">Unlock Settings</button>
       </div>
 
-      <div class="card" id="tokenConfigBox" style="display: none;">
-        <div class="card-title">⚡ GitHub Fast Live Sync</div>
+      <div class="profile-header-card" id="tokenBox" style="display:none;">
+        <div style="font-size:1rem; font-weight:700; margin-bottom:6px;">⚡ GitHub Live Fast-Sync</div>
         <div class="form-group">
           <label>Repository (Hardcoded)</label>
-          <input type="text" value="TechsInMyDNA / SUNNY-STORES-MANAGEMENT-SYSTEM" disabled style="opacity: 0.75;" />
+          <input type="text" value="TechsInMyDNA / SUNNY-STORES-MANAGEMENT-SYSTEM" disabled style="opacity:0.65;" />
         </div>
         <div class="form-group">
           <label>GitHub Personal Access Token (PAT)</label>
           <input type="password" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
         </div>
-        <div class="form-row">
-          <button class="btn btn-green" onclick="saveGitHubToken()">Apply & Sync</button>
-          <button class="btn btn-red" onclick="removeGitHubToken()">Disconnect</button>
+        <div style="display:flex; gap:10px;">
+          <button class="btn-submit got" onclick="saveToken()">Save & Sync Cloud</button>
+          <button class="btn-submit give" onclick="disconnectToken()">Disconnect</button>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-title">💾 Backup & Manual Data Export</div>
-        <button class="btn btn-primary" onclick="exportDataJson()">Download data.json Backup</button>
+      <div class="profile-header-card">
+        <div style="font-size:1rem; font-weight:700; margin-bottom:6px;">💾 Local Data Backup</div>
+        <p style="font-size:0.78rem; color:var(--text-sub); margin-bottom:12px;">Download an exact JSON backup copy of all store data.</p>
+        <button class="btn-submit" onclick="downloadBackup()">Export data.json</button>
       </div>
     </section>
   </main>
 
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- MODAL: ADD CUSTOMER -->
+  <div class="modal-overlay" id="modalCustomer">
+    <div class="modal-sheet">
+      <div class="sheet-title">
+        <span>Add New Customer</span>
+        <button class="sheet-close" onclick="closeModal('modalCustomer')">✕</button>
+      </div>
+      <div class="form-group">
+        <label>Customer Name *</label>
+        <input type="text" id="custModalName" placeholder="e.g. Ramesh Bhai" />
+      </div>
+      <div class="form-group">
+        <label>Mobile Number (For WhatsApp / SMS)</label>
+        <input type="tel" id="custModalPhone" placeholder="10 Digit Mobile Number" maxlength="10" />
+      </div>
+      <button class="btn-submit" onclick="saveNewCustomer()">Create Profile</button>
+    </div>
+  </div>
+
+  <!-- MODAL: TRANSACTION WITH INBUILT CALCULATOR -->
+  <div class="modal-overlay" id="modalTx">
+    <div class="modal-sheet">
+      <div class="sheet-title">
+        <span id="txModalHeader">Transaction</span>
+        <button class="sheet-close" onclick="closeModal('modalTx')">✕</button>
+      </div>
+      <input type="hidden" id="txModalEditId" value="" />
+      <input type="hidden" id="txModalActionType" value="GIVEN" />
+
+      <div class="form-group">
+        <label>Amount (₹) * (Direct math: e.g. 1000 - 10%)</label>
+        <div class="input-with-calc">
+          <input type="text" id="txModalAmount" placeholder="0" style="font-size:1.3rem; font-weight:700;" onblur="evaluateMathInput(this)" onkeydown="if(event.key==='Enter') evaluateMathInput(this)" />
+          <button class="btn-calc-trigger" title="Open Keypad Calculator" onclick="openKeypadModal('txModalAmount')">🧮</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Remarks / Bill Description (Optional)</label>
+        <input type="text" id="txModalRemarks" placeholder="e.g. 2 Packet Goods / Cash" />
+      </div>
+
+      <!-- DEFAULT CHECKBOXES ARE OFF -->
+      <div class="check-row">
+        <label class="check-item">
+          <input type="checkbox" id="txChkWA" />
+          <span>WhatsApp Alert</span>
+        </label>
+        <label class="check-item">
+          <input type="checkbox" id="txChkSMS" />
+          <span>SMS Alert</span>
+        </label>
+      </div>
+
+      <button class="btn-submit" id="txModalBtn" onclick="submitTransactionModal()">Save</button>
+    </div>
+  </div>
+
+  <!-- MODAL: MAAL INWARD (ADD / EDIT) -->
+  <div class="modal-overlay" id="modalMaal">
+    <div class="modal-sheet">
+      <div class="sheet-title">
+        <span id="maalModalHeader">📦 Maal Inward</span>
+        <button class="sheet-close" onclick="closeModal('modalMaal')">✕</button>
+      </div>
+      <input type="hidden" id="maalModalEditId" value="" />
+
+      <div class="form-group">
+        <label>Kya Maal Aaya (Item Name) *</label>
+        <input type="text" id="maalModalItem" list="maalSuggestions" placeholder="Start typing item name..." autocomplete="off" />
+        <datalist id="maalSuggestions"></datalist>
+      </div>
+
+      <div class="form-group">
+        <label>Kitne Ka Aaya (₹ Total) *</label>
+        <div class="input-with-calc">
+          <input type="text" id="maalModalAmount" placeholder="Amount ₹" onblur="evaluateMathInput(this)" onkeydown="if(event.key==='Enter') evaluateMathInput(this)" />
+          <button class="btn-calc-trigger" title="Open Keypad Calculator" onclick="openKeypadModal('maalModalAmount')">🧮</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Kisse Aaya (Supplier / Agency) *</label>
+        <input type="text" id="maalModalSupplier" placeholder="Supplier Name" />
+      </div>
+
+      <div class="form-group">
+        <label>Kab Aaya (Date & Time) *</label>
+        <input type="datetime-local" id="maalModalDateTime" />
+      </div>
+
+      <button class="btn-submit got" id="maalModalBtn" onclick="submitMaalModal()">Save Maal Inward</button>
+    </div>
+  </div>
+
+  <!-- MODAL: NUMPAD CALCULATOR POPUP -->
+  <div class="modal-overlay" id="modalCalculatorKeypad">
+    <div class="modal-sheet" style="max-width: 400px;">
+      <div class="sheet-title">
+        <span>🧮 Calculator</span>
+        <button class="sheet-close" onclick="closeModal('modalCalculatorKeypad')">✕</button>
+      </div>
+      <div id="keypadModalContainer"></div>
+      <button class="btn-submit got" style="margin-top: 12px;" onclick="applyCalcToTargetInput()">Apply Amount</button>
+    </div>
+  </div>
+
   <script>
-    // HARDCODED REPO CREDENTIALS
+    // HARDCODED SECURE GITHUB CONFIGURATION
     const GH_OWNER = "TechsInMyDNA";
     const GH_REPO = "SUNNY-STORES-MANAGEMENT-SYSTEM";
     const GH_FILE = "data.json";
 
-    // Application Schema
+    // Application State
     let appData = {
-      customers: [], // { id, name, phone, transactions: [ { id, amount, type: 'GIVEN'|'RECEIVED', remarks, date } ] }
-      maal: [],      // { id, item, amount, supplier, dateTime }
+      customers: [],
+      maal: [],
       lastUpdated: new Date().toISOString()
     };
 
-    let activeCustomerId = null;
+    let activeCustId = null;
     let ghSha = null;
     let isSyncing = false;
 
-    // Security Verification (Obfuscated Passphrase)
-    function checkPassphrase(str) {
+    // Calculator Global State
+    let calcTargetInputId = null;
+
+    // Obfuscated Security Passphrase Verification
+    function verifySecret(val) {
       const codeSeq = [83,117,110,110,121,83,116,111,114,101,115,64,49,52,52];
-      if (str.length !== codeSeq.length) return false;
+      if (val.length !== codeSeq.length) return false;
       for (let i = 0; i < codeSeq.length; i++) {
-        if (str.charCodeAt(i) !== codeSeq[i]) return false;
+        if (val.charCodeAt(i) !== codeSeq[i]) return false;
       }
       return true;
     }
 
-    // Init App
+    // App Initialization
     window.addEventListener("DOMContentLoaded", () => {
-      const now = new Date();
-      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-      document.getElementById("maalDateTime").value = now.toISOString().slice(0, 16);
-
-      loadLocal();
+      loadFromStorage();
       renderAll();
+      buildCalculatorUI("standaloneCalcBox", false);
 
-      const token = localStorage.getItem("ss_gh_token");
-      if (token) {
-        syncFromGitHub();
+      const savedToken = localStorage.getItem("ss_gh_token");
+      if (savedToken) {
+        syncPullFromGitHub();
       } else {
-        updateSyncBadge("local", "Local Only");
+        updateBadge("local", "Local Only");
       }
 
       window.addEventListener("online", () => {
-        if (localStorage.getItem("ss_gh_token")) syncToGitHub();
+        if (localStorage.getItem("ss_gh_token")) syncPushToGitHub();
       });
     });
 
-    // Tab Switcher
-    function switchTab(tabId) {
-      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    // Navigation Switcher
+    function switchNavTab(tab) {
+      document.querySelectorAll(".nav-tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
 
-      if (tabId === "khata") {
-        document.querySelector(".tab-btn:nth-child(1)").classList.add("active");
-        document.getElementById("khataPanel").classList.add("active");
-      } else if (tabId === "maal") {
-        document.querySelector(".tab-btn:nth-child(2)").classList.add("active");
-        document.getElementById("maalPanel").classList.add("active");
-      } else if (tabId === "settings") {
-        document.querySelector(".tab-btn:nth-child(3)").classList.add("active");
-        document.getElementById("settingsPanel").classList.add("active");
+      if (tab === "khata") {
+        document.querySelector(".nav-tab-btn:nth-child(1)").classList.add("active");
+        document.getElementById("khataView").classList.add("active");
+        closeCustomerLedger();
+      } else if (tab === "maal") {
+        document.querySelector(".nav-tab-btn:nth-child(2)").classList.add("active");
+        document.getElementById("maalView").classList.add("active");
+        renderMaalList();
+      } else if (tab === "calculator") {
+        document.querySelector(".nav-tab-btn:nth-child(3)").classList.add("active");
+        document.getElementById("calculatorView").classList.add("active");
+      } else if (tab === "settings") {
+        document.querySelector(".nav-tab-btn:nth-child(4)").classList.add("active");
+        document.getElementById("settingsView").classList.add("active");
       }
     }
 
-    // Master Passphrase & Token
-    function verifyMasterPassphrase() {
-      const pass = document.getElementById("passphraseInput").value.trim();
-      if (checkPassphrase(pass)) {
-        document.getElementById("tokenConfigBox").style.display = "block";
-        const savedToken = localStorage.getItem("ss_gh_token");
-        if (savedToken) document.getElementById("ghTokenInput").value = savedToken;
-        document.getElementById("passphraseInput").value = "";
-        alert("Unlocked: You can configure GitHub live sync token.");
+    // Modal Controls
+    function openModal(id) { document.getElementById(id).classList.add("active"); }
+    function closeModal(id) { document.getElementById(id).classList.remove("active"); }
+
+    // Security & Token Controls
+    function verifyPassphrase() {
+      const p = document.getElementById("passInput").value.trim();
+      if (verifySecret(p)) {
+        document.getElementById("tokenBox").style.display = "block";
+        const tok = localStorage.getItem("ss_gh_token");
+        if (tok) document.getElementById("ghTokenInput").value = tok;
+        document.getElementById("passInput").value = "";
+        alert("Settings Unlocked.");
       } else {
-        alert("Incorrect Master Passphrase!");
+        alert("Invalid Passphrase!");
       }
     }
 
-    function saveGitHubToken() {
-      const token = document.getElementById("ghTokenInput").value.trim();
-      if (!token) return alert("Enter a valid token.");
-      localStorage.setItem("ss_gh_token", token);
-      alert("Token saved. Starting sync...");
-      syncFromGitHub();
+    function saveToken() {
+      const tok = document.getElementById("ghTokenInput").value.trim();
+      if (!tok) return alert("Enter a valid GitHub Personal Access Token.");
+      localStorage.setItem("ss_gh_token", tok);
+      alert("Token saved. Starting Cloud Sync...");
+      syncPullFromGitHub();
     }
 
-    function removeGitHubToken() {
-      if (confirm("Disconnect GitHub Sync?")) {
+    function disconnectToken() {
+      if (confirm("Disconnect GitHub Sync? Data will stay stored locally.")) {
         localStorage.removeItem("ss_gh_token");
         document.getElementById("ghTokenInput").value = "";
-        document.getElementById("tokenConfigBox").style.display = "none";
-        updateSyncBadge("local", "Local Only");
+        document.getElementById("tokenBox").style.display = "none";
+        updateBadge("local", "Local Only");
       }
     }
 
-    // Local Storage & Cloud Auto Sync
-    function saveLocal() {
+    // Local Storage & Cloud Live Sync
+    function saveToStorage() {
       appData.lastUpdated = new Date().toISOString();
       localStorage.setItem("ss_data", JSON.stringify(appData));
       renderAll();
-      triggerAutoSync();
+      triggerCloudSync();
     }
 
-    function loadLocal() {
-      const local = localStorage.getItem("ss_data");
-      if (local) {
+    function loadFromStorage() {
+      const raw = localStorage.getItem("ss_data");
+      if (raw) {
         try {
-          const parsed = JSON.parse(local);
-          // Migration support from flat khata structure if present
-          if (parsed.khata && !parsed.customers) {
-            parsed.customers = [];
-            parsed.khata.forEach(k => {
-              let cust = parsed.customers.find(c => c.name.toLowerCase() === k.name.toLowerCase());
-              if (!cust) {
-                cust = { id: "CUST_" + Math.random().toString(36).substr(2, 9), name: k.name, phone: k.phone || "", transactions: [] };
-                parsed.customers.push(cust);
-              }
-              cust.transactions.push({
-                id: k.id,
-                amount: k.amount,
-                type: k.type === "UDHAR" ? "GIVEN" : "RECEIVED",
-                remarks: k.remarks,
-                date: k.date
-              });
-            });
-            delete parsed.khata;
-          }
+          const parsed = JSON.parse(raw);
           appData = {
             customers: parsed.customers || [],
             maal: parsed.maal || [],
             lastUpdated: parsed.lastUpdated || new Date().toISOString()
           };
         } catch (e) {
-          console.error("Local parse error", e);
+          console.error("Local storage read issue", e);
         }
       }
     }
 
-    function triggerAutoSync() {
-      const token = localStorage.getItem("ss_gh_token");
-      if (token && navigator.onLine) {
-        syncToGitHub();
+    function triggerCloudSync() {
+      const tok = localStorage.getItem("ss_gh_token");
+      if (tok && navigator.onLine) {
+        syncPushToGitHub();
       } else if (!navigator.onLine) {
-        updateSyncBadge("offline", "Offline (Saved Locally)");
+        updateBadge("offline", "Offline (Saved)");
       }
     }
 
-    async function syncFromGitHub() {
-      const token = localStorage.getItem("ss_gh_token");
-      if (!token) return;
+    async function syncPullFromGitHub() {
+      const tok = localStorage.getItem("ss_gh_token");
+      if (!tok) return;
 
-      updateSyncBadge("syncing", "Syncing...");
+      updateBadge("syncing", "Syncing...");
       const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
 
       try {
         const res = await fetch(url, {
-          headers: { "Authorization": `Bearer ${token}`, "Accept": "application/vnd.github.v3+json" }
+          headers: { "Authorization": `Bearer ${tok}`, "Accept": "application/vnd.github.v3+json" }
         });
 
         if (res.status === 200) {
-          const fileData = await res.json();
-          ghSha = fileData.sha;
-          const content = decodeURIComponent(escape(atob(fileData.content)));
+          const data = await res.json();
+          ghSha = data.sha;
+          const content = decodeURIComponent(escape(atob(data.content)));
           const remoteJson = JSON.parse(content);
 
           if (!appData.lastUpdated || new Date(remoteJson.lastUpdated) >= new Date(appData.lastUpdated)) {
@@ -677,150 +1054,305 @@
             localStorage.setItem("ss_data", JSON.stringify(appData));
             renderAll();
           } else {
-            await syncToGitHub();
+            await syncPushToGitHub();
             return;
           }
-          updateSyncBadge("synced", "⚡ Live Synced");
+          updateBadge("synced", "⚡ Live Synced");
         } else if (res.status === 404) {
-          await syncToGitHub();
+          await syncPushToGitHub();
         } else {
-          updateSyncBadge("offline", "Auth Error");
+          updateBadge("offline", "Auth Error");
         }
-      } catch (err) {
-        updateSyncBadge("offline", "Local Only");
+      } catch (e) {
+        updateBadge("offline", "Local Only");
       }
     }
 
-    async function syncToGitHub() {
-      const token = localStorage.getItem("ss_gh_token");
-      if (!token || isSyncing) return;
+    async function syncPushToGitHub() {
+      const tok = localStorage.getItem("ss_gh_token");
+      if (!tok || isSyncing) return;
 
       isSyncing = true;
-      updateSyncBadge("syncing", "Live Saving...");
+      updateBadge("syncing", "Live Saving...");
 
       const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
       const jsonStr = JSON.stringify(appData, null, 2);
-      const encodedContent = btoa(unescape(encodeURIComponent(jsonStr)));
+      const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
 
       try {
         if (!ghSha) {
           const checkRes = await fetch(url, {
-            headers: { "Authorization": `Bearer ${token}`, "Accept": "application/vnd.github.v3+json" }
+            headers: { "Authorization": `Bearer ${tok}`, "Accept": "application/vnd.github.v3+json" }
           });
           if (checkRes.status === 200) {
-            const current = await checkRes.json();
-            ghSha = current.sha;
+            const cur = await checkRes.json();
+            ghSha = cur.sha;
           }
         }
 
-        const bodyPayload = {
+        const payload = {
           message: `Update Sunny Stores Ledger [${new Date().toLocaleTimeString()}]`,
-          content: encodedContent,
+          content: encoded,
           branch: "main"
         };
-        if (ghSha) bodyPayload.sha = ghSha;
+        if (ghSha) payload.sha = ghSha;
 
         const putRes = await fetch(url, {
           method: "PUT",
           headers: {
-            "Authorization": `Bearer ${token}`,
+            "Authorization": `Bearer ${tok}`,
             "Content-Type": "application/json",
             "Accept": "application/vnd.github.v3+json"
           },
-          body: JSON.stringify(bodyPayload)
+          body: JSON.stringify(payload)
         });
 
         if (putRes.ok) {
-          const resData = await putRes.json();
-          ghSha = resData.content.sha;
-          updateSyncBadge("synced", "⚡ Live Synced");
+          const r = await putRes.json();
+          ghSha = r.content.sha;
+          updateBadge("synced", "⚡ Live Synced");
         } else {
-          updateSyncBadge("offline", "Pending Sync");
+          updateBadge("offline", "Pending Sync");
         }
-      } catch (err) {
-        updateSyncBadge("offline", "Saved Locally");
+      } catch (e) {
+        updateBadge("offline", "Saved Locally");
       } finally {
         isSyncing = false;
       }
     }
 
-    function updateSyncBadge(type, text) {
-      const dot = document.getElementById("syncDot");
-      const txt = document.getElementById("syncText");
-      dot.className = "sync-dot " + type;
-      txt.textContent = text;
+    function updateBadge(type, txt) {
+      document.getElementById("syncDot").className = "sync-dot " + type;
+      document.getElementById("syncText").textContent = txt;
     }
 
-    // CUSTOMER PROFILE MANAGEMENT
-    function createCustomerProfile() {
-      const name = document.getElementById("newCustName").value.trim();
-      const phone = document.getElementById("newCustPhone").value.trim();
+    // ==========================================
+    // SMART MATH ENGINE WITH PERCENTAGE (%)
+    // ==========================================
+    function safeEvalMath(expr) {
+      try {
+        if (!expr) return 0;
+        let str = expr.replace(/×/g, "*").replace(/÷/g, "/").replace(/\s+/g, "");
+
+        // Smart Percentage Logic for retail (e.g., 1000 - 10% => 1000 - (1000 * 0.1))
+        str = str.replace(/([0-9.]+)([+\-])([0-9.]+)%/g, (m, a, op, b) => {
+          return `${a}${op}(${a}*${b}/100)`;
+        });
+
+        // Direct Multiplication Percentage (e.g., 500 * 5% => 500 * 0.05)
+        str = str.replace(/([0-9.]+)%/g, "($1/100)");
+
+        // Security check: Only mathematical symbols and numbers allowed
+        const sanitized = str.replace(/[^0-9+\-*/().]/g, "");
+        if (!sanitized) return 0;
+
+        const res = Function(`'use strict'; return (${sanitized})`)();
+        return isFinite(res) ? Math.round(res * 100) / 100 : 0;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function evaluateMathInput(inputElement) {
+      const raw = inputElement.value.trim();
+      if (!raw) return;
+      const res = safeEvalMath(raw);
+      if (res !== null && !isNaN(res)) {
+        inputElement.value = res;
+      }
+    }
+
+    function buildCalculatorUI(containerId, isModal = false) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = `
+        <div class="calc-screen">
+          <div class="calc-expression" id="${containerId}_expr">0</div>
+          <div class="calc-result" id="${containerId}_res">0</div>
+        </div>
+        <div class="calc-grid">
+          <button class="calc-key danger" onclick="pressCalcKey('${containerId}', 'C')">C</button>
+          <button class="calc-key danger" onclick="pressCalcKey('${containerId}', 'DEL')">⌫</button>
+          <button class="calc-key op" onclick="pressCalcKey('${containerId}', '%')">%</button>
+          <button class="calc-key op" onclick="pressCalcKey('${containerId}', '÷')">÷</button>
+
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '7')">7</button>
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '8')">8</button>
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '9')">9</button>
+          <button class="calc-key op" onclick="pressCalcKey('${containerId}', '×')">×</button>
+
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '4')">4</button>
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '5')">5</button>
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '6')">6</button>
+          <button class="calc-key op" onclick="pressCalcKey('${containerId}', '-')">-</button>
+
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '1')">1</button>
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '2')">2</button>
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '3')">3</button>
+          <button class="calc-key op" onclick="pressCalcKey('${containerId}', '+')">+</button>
+
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '0')">0</button>
+          <button class="calc-key" onclick="pressCalcKey('${containerId}', '.')">.</button>
+          <button class="calc-key equal" style="grid-column: span 2;" onclick="pressCalcKey('${containerId}', '=')">=</button>
+        </div>
+      `;
+    }
+
+    let calcStore = {};
+
+    function pressCalcKey(cid, key) {
+      if (!calcStore[cid]) calcStore[cid] = { expr: "" };
+      let state = calcStore[cid];
+
+      if (key === "C") {
+        state.expr = "";
+      } else if (key === "DEL") {
+        state.expr = state.expr.slice(0, -1);
+      } else if (key === "=") {
+        const val = safeEvalMath(state.expr);
+        if (val !== null) state.expr = String(val);
+      } else {
+        const lastChar = state.expr.slice(-1);
+        if (["+", "-", "×", "÷"].includes(key) && ["+", "-", "×", "÷"].includes(lastChar)) {
+          state.expr = state.expr.slice(0, -1) + key;
+        } else {
+          state.expr += key;
+        }
+      }
+
+      document.getElementById(`${cid}_expr`).textContent = state.expr || "0";
+      const evalResult = safeEvalMath(state.expr);
+      document.getElementById(`${cid}_res`).textContent = evalResult !== null ? evalResult : "0";
+    }
+
+    function openKeypadModal(targetInputId) {
+      calcTargetInputId = targetInputId;
+      const initialVal = document.getElementById(targetInputId).value.trim();
+      buildCalculatorUI("keypadModalContainer", true);
+      calcStore["keypadModalContainer"] = { expr: initialVal && !isNaN(initialVal) ? initialVal : "" };
+      pressCalcKey("keypadModalContainer", "");
+      openModal("modalCalculatorKeypad");
+    }
+
+    function applyCalcToTargetInput() {
+      if (calcTargetInputId && calcStore["keypadModalContainer"]) {
+        const finalVal = safeEvalMath(calcStore["keypadModalContainer"].expr);
+        document.getElementById(calcTargetInputId).value = (finalVal !== null && !isNaN(finalVal)) ? finalVal : 0;
+      }
+      closeModal("modalCalculatorKeypad");
+    }
+
+    // ==========================================
+    // CUSTOMER FEED & PROFILES
+    // ==========================================
+    function openCreateCustomerModal() {
+      document.getElementById("custModalName").value = "";
+      document.getElementById("custModalPhone").value = "";
+      openModal("modalCustomer");
+    }
+
+    function saveNewCustomer() {
+      const name = document.getElementById("custModalName").value.trim();
+      const phone = document.getElementById("custModalPhone").value.trim();
 
       if (!name) return alert("Please enter Customer Name.");
 
       const existing = appData.customers.find(c => c.name.toLowerCase() === name.toLowerCase());
       if (existing) {
-        alert("Customer already exists with this name!");
-        openCustomerProfile(existing.id);
+        alert("Customer profile already exists!");
+        closeModal("modalCustomer");
+        openCustomerLedger(existing.id);
         return;
       }
 
-      const newCustomer = {
+      const newCust = {
         id: "CUST_" + Date.now(),
         name,
         phone,
         transactions: []
       };
 
-      appData.customers.unshift(newCustomer);
-      saveLocal();
-
-      document.getElementById("newCustName").value = "";
-      document.getElementById("newCustPhone").value = "";
-      openCustomerProfile(newCustomer.id);
+      appData.customers.unshift(newCust);
+      saveToStorage();
+      closeModal("modalCustomer");
+      openCustomerLedger(newCust.id);
     }
 
-    function openCustomerProfile(custId) {
-      activeCustomerId = custId;
-      document.getElementById("customerDirectoryView").style.display = "none";
-      document.getElementById("customerDetailView").style.display = "block";
-      cancelEditTransaction();
-      renderCustomerDetail();
+    function openCustomerLedger(id) {
+      activeCustId = id;
+      document.getElementById("customerDirectoryContainer").style.display = "none";
+      document.getElementById("customerLedgerContainer").style.display = "block";
+      renderCustomerLedgerView();
     }
 
-    function closeCustomerProfile() {
-      activeCustomerId = null;
-      document.getElementById("customerDetailView").style.display = "none";
-      document.getElementById("customerDirectoryView").style.display = "block";
-      renderCustomerDirectory();
+    function closeCustomerLedger() {
+      activeCustId = null;
+      document.getElementById("customerLedgerContainer").style.display = "none";
+      document.getElementById("customerDirectoryContainer").style.display = "block";
+      renderCustomerList();
     }
 
-    function deleteCustomerProfile(custId, e) {
-      e.stopPropagation();
-      if (confirm("Delete this customer and all their ledger history?")) {
-        appData.customers = appData.customers.filter(c => c.id !== custId);
-        saveLocal();
-        if (activeCustomerId === custId) closeCustomerProfile();
+    function deleteCurrentProfile() {
+      if (confirm("Delete this Customer and all associated ledger records?")) {
+        appData.customers = appData.customers.filter(c => c.id !== activeCustId);
+        saveToStorage();
+        closeCustomerLedger();
       }
     }
 
-    // CUSTOMER LEDGER TRANSACTIONS (Add / Edit / Delete)
-    function saveTransaction() {
-      const cust = appData.customers.find(c => c.id === activeCustomerId);
+    // ==========================================
+    // LEDGER TRANSACTIONS (GIVE / GOT)
+    // ==========================================
+    function openTxModal(type, editTxId = null) {
+      document.getElementById("txModalActionType").value = type;
+      document.getElementById("txModalEditId").value = editTxId || "";
+      document.getElementById("txChkWA").checked = false;
+      document.getElementById("txChkSMS").checked = false;
+
+      const header = document.getElementById("txModalHeader");
+      const btn = document.getElementById("txModalBtn");
+
+      if (type === "GIVEN") {
+        header.textContent = editTxId ? "✏️ Edit: Maine Diye (Udhar)" : "🔴 Maine Diye (Given / Udhar)";
+        btn.textContent = editTxId ? "Update Entry" : "Save Maine Diye";
+        btn.className = "btn-submit give";
+      } else {
+        header.textContent = editTxId ? "✏️ Edit: Maine Liye (Jama)" : "🟢 Maine Liye (Got / Jama)";
+        btn.textContent = editTxId ? "Update Entry" : "Save Maine Liye";
+        btn.className = "btn-submit got";
+      }
+
+      if (editTxId) {
+        const cust = appData.customers.find(c => c.id === activeCustId);
+        const tx = cust.transactions.find(t => t.id === editTxId);
+        if (tx) {
+          document.getElementById("txModalAmount").value = tx.amount;
+          document.getElementById("txModalRemarks").value = tx.remarks || "";
+        }
+      } else {
+        document.getElementById("txModalAmount").value = "";
+        document.getElementById("txModalRemarks").value = "";
+      }
+
+      openModal("modalTx");
+    }
+
+    function submitTransactionModal() {
+      const cust = appData.customers.find(c => c.id === activeCustId);
       if (!cust) return;
 
-      const editId = document.getElementById("txEditId").value;
-      const amount = parseFloat(document.getElementById("txAmount").value);
-      const type = document.getElementById("txType").value;
-      const remarks = document.getElementById("txRemarks").value.trim();
-      const sendWa = document.getElementById("chkWhatsApp").checked;
-      const sendSms = document.getElementById("chkSMS").checked;
+      const editId = document.getElementById("txModalEditId").value;
+      const type = document.getElementById("txModalActionType").value;
+      
+      evaluateMathInput(document.getElementById("txModalAmount"));
+      const amount = parseFloat(document.getElementById("txModalAmount").value);
+      const remarks = document.getElementById("txModalRemarks").value.trim();
+      const sendWa = document.getElementById("txChkWA").checked;
+      const sendSms = document.getElementById("txChkSMS").checked;
 
       if (isNaN(amount) || amount <= 0) return alert("Enter a valid amount.");
 
       let txObj;
       if (editId) {
-        // Edit existing
         txObj = cust.transactions.find(t => t.id === editId);
         if (txObj) {
           txObj.amount = amount;
@@ -828,7 +1360,6 @@
           txObj.remarks = remarks;
         }
       } else {
-        // New entry
         txObj = {
           id: "TX_" + Date.now(),
           amount,
@@ -839,97 +1370,99 @@
         cust.transactions.unshift(txObj);
       }
 
-      saveLocal();
-      renderCustomerDetail();
+      saveToStorage();
+      closeModal("modalTx");
+      renderCustomerLedgerView();
 
-      // Trigger alerts if checked
-      if (sendWa && cust.phone) sendTransactionAlert(cust, txObj, "wa");
-      if (sendSms && cust.phone) sendTransactionAlert(cust, txObj, "sms");
-
-      cancelEditTransaction();
+      if (sendWa && cust.phone) triggerNotification(cust, txObj, "wa");
+      if (sendSms && cust.phone) triggerNotification(cust, txObj, "sms");
     }
 
-    function editTransaction(txId) {
-      const cust = appData.customers.find(c => c.id === activeCustomerId);
-      const tx = cust.transactions.find(t => t.id === txId);
-      if (!tx) return;
-
-      document.getElementById("txEditId").value = tx.id;
-      document.getElementById("txAmount").value = tx.amount;
-      document.getElementById("txType").value = tx.type;
-      document.getElementById("txRemarks").value = tx.remarks || "";
-      document.getElementById("txFormTitle").textContent = "✏️ Edit Transaction";
-      document.getElementById("btnSaveTx").textContent = "Update Transaction";
-      document.getElementById("btnCancelTx").style.display = "block";
-    }
-
-    function cancelEditTransaction() {
-      document.getElementById("txEditId").value = "";
-      document.getElementById("txAmount").value = "";
-      document.getElementById("txRemarks").value = "";
-      document.getElementById("chkWhatsApp").checked = false;
-      document.getElementById("chkSMS").checked = false;
-      document.getElementById("txFormTitle").textContent = "Record Transaction";
-      document.getElementById("btnSaveTx").textContent = "Save Transaction";
-      document.getElementById("btnCancelTx").style.display = "none";
-    }
-
-    function deleteTransaction(txId) {
+    function deleteLedgerEntry(txId) {
       if (confirm("Delete this transaction entry?")) {
-        const cust = appData.customers.find(c => c.id === activeCustomerId);
+        const cust = appData.customers.find(c => c.id === activeCustId);
         if (cust) {
           cust.transactions = cust.transactions.filter(t => t.id !== txId);
-          saveLocal();
-          renderCustomerDetail();
+          saveToStorage();
+          renderCustomerLedgerView();
         }
       }
     }
 
-    // ALERTS & REMINDERS (WhatsApp / SMS)
-    function sendTransactionAlert(cust, tx, channel) {
+    // Reminders & Alerts
+    function triggerNotification(cust, tx, channel) {
       const isGiven = tx.type === "GIVEN";
-      const msg = `*SUNNY STORES - Hisaab Update*\nNamaste ${cust.name},\nAapke khate me naya entry darj hua hai:\n- Type: ${isGiven ? 'Given (Udhar / Baki)' : 'Received (Jama)'}\n- Rakam: ₹${tx.amount.toLocaleString()}\n- Vivaran: ${tx.remarks || 'Standard Transaction'}\n- Date: ${new Date(tx.date).toLocaleDateString()}\nDhanyawad! - Sunny Stores`;
-
-      dispatchMsg(cust.phone, msg, channel);
+      const msg = `*SUNNY STORES - Hisaab Update*\nNamaste ${cust.name},\nAapke khate me transaction darj hua hai:\n- Type: ${isGiven ? 'Maine Diye (Udhar/Baki)' : 'Maine Liye (Jama)'}\n- Rakam: ₹${tx.amount.toLocaleString()}\n- Vivaran: ${tx.remarks || 'Standard Hisaab'}\n- Date: ${new Date(tx.date).toLocaleDateString()}\nDhanyawad! - Sunny Stores`;
+      dispatchDirect(cust.phone, msg, channel);
     }
 
-    function sendLedgerReminder(channel) {
-      const cust = appData.customers.find(c => c.id === activeCustomerId);
+    function sendDirectReminder(channel) {
+      const cust = appData.customers.find(c => c.id === activeCustId);
       if (!cust) return;
-      if (!cust.phone) return alert("Customer phone number not available!");
+      if (!cust.phone) return alert("Customer phone number not available.");
 
-      let given = 0, received = 0;
+      let given = 0, got = 0;
       cust.transactions.forEach(t => {
         if (t.type === "GIVEN") given += t.amount;
-        else received += t.amount;
+        else got += t.amount;
       });
-      const balance = given - received;
+      const balance = given - got;
 
-      if (balance <= 0) return alert("Customer has no pending balance!");
+      if (balance <= 0) return alert("Customer has no pending due balance!");
 
-      const msg = `*SUNNY STORES - Reminder*\nNamaste ${cust.name},\nAapka Sunny Stores par kul hisaab ₹${balance.toLocaleString()} baaki hai. Kripya samay anusar bhugtan karein.\nDhanyawad! - Sunny Stores`;
-
-      dispatchMsg(cust.phone, msg, channel);
+      const msg = `*SUNNY STORES - Payment Reminder*\nNamaste ${cust.name},\nAapka Sunny Stores par kul hisaab ₹${balance.toLocaleString()} baaki hai. Kripya samay anusar bhugtan karein.\nDhanyawad! - Sunny Stores`;
+      dispatchDirect(cust.phone, msg, channel);
     }
 
-    function dispatchMsg(phone, msg, channel) {
-      const cleanPhone = phone.replace(/[^0-9]/g, "");
-      const fullPhone = cleanPhone.length === 10 ? "91" + cleanPhone : cleanPhone;
-
+    function dispatchDirect(phone, msg, channel) {
+      const clean = phone.replace(/[^0-9]/g, "");
+      const full = clean.length === 10 ? "91" + clean : clean;
       if (channel === "wa") {
-        window.open(`https://wa.me/${fullPhone}?text=${encodeURIComponent(msg)}`, "_blank");
+        window.open(`https://wa.me/${full}?text=${encodeURIComponent(msg)}`, "_blank");
       } else {
-        window.location.href = `sms:${cleanPhone}?body=${encodeURIComponent(msg)}`;
+        window.location.href = `sms:${clean}?body=${encodeURIComponent(msg)}`;
       }
     }
 
-    // MAAL INWARD (Edit, Delete, Autocomplete Duplication Prevention)
-    function saveMaalEntry() {
-      const editId = document.getElementById("maalEditId").value;
-      const item = document.getElementById("maalItem").value.trim();
-      const amount = parseFloat(document.getElementById("maalAmount").value);
-      const supplier = document.getElementById("maalSupplier").value.trim();
-      const dateTime = document.getElementById("maalDateTime").value;
+    // ==========================================
+    // MAAL INWARD (EDIT / DELETE / AUTOCOMPLETE)
+    // ==========================================
+    function openMaalModal(editId = null) {
+      document.getElementById("maalModalEditId").value = editId || "";
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+      if (editId) {
+        const m = appData.maal.find(x => x.id === editId);
+        if (m) {
+          document.getElementById("maalModalHeader").textContent = "✏️ Edit Maal Inward";
+          document.getElementById("maalModalItem").value = m.item;
+          document.getElementById("maalModalAmount").value = m.amount;
+          document.getElementById("maalModalSupplier").value = m.supplier;
+          document.getElementById("maalModalDateTime").value = new Date(m.dateTime).toISOString().slice(0, 16);
+          document.getElementById("maalModalBtn").textContent = "Update Maal Entry";
+        }
+      } else {
+        document.getElementById("maalModalHeader").textContent = "📦 New Maal Aawam";
+        document.getElementById("maalModalItem").value = "";
+        document.getElementById("maalModalAmount").value = "";
+        document.getElementById("maalModalSupplier").value = "";
+        document.getElementById("maalModalDateTime").value = now.toISOString().slice(0, 16);
+        document.getElementById("maalModalBtn").textContent = "Save Maal Inward";
+      }
+
+      updateMaalSuggestions();
+      openModal("modalMaal");
+    }
+
+    function submitMaalModal() {
+      const editId = document.getElementById("maalModalEditId").value;
+      const item = document.getElementById("maalModalItem").value.trim();
+      
+      evaluateMathInput(document.getElementById("maalModalAmount"));
+      const amount = parseFloat(document.getElementById("maalModalAmount").value);
+      const supplier = document.getElementById("maalModalSupplier").value.trim();
+      const dateTime = document.getElementById("maalModalDateTime").value;
 
       if (!item || isNaN(amount) || !supplier || !dateTime) {
         return alert("Please fill all Maal Inward fields properly.");
@@ -944,154 +1477,153 @@
           m.dateTime = new Date(dateTime).toISOString();
         }
       } else {
-        const entry = {
+        appData.maal.unshift({
           id: "ML_" + Date.now(),
           item,
           amount,
           supplier,
           dateTime: new Date(dateTime).toISOString()
-        };
-        appData.maal.unshift(entry);
+        });
       }
 
-      saveLocal();
-      cancelEditMaal();
+      saveToStorage();
+      closeModal("modalMaal");
+      renderMaalList();
     }
 
-    function editMaal(id) {
-      const m = appData.maal.find(x => x.id === id);
-      if (!m) return;
-
-      document.getElementById("maalEditId").value = m.id;
-      document.getElementById("maalItem").value = m.item;
-      document.getElementById("maalAmount").value = m.amount;
-      document.getElementById("maalSupplier").value = m.supplier;
-      document.getElementById("maalDateTime").value = new Date(m.dateTime).toISOString().slice(0, 16);
-
-      document.getElementById("maalFormTitle").textContent = "✏️ Edit Maal Entry";
-      document.getElementById("btnSaveMaal").textContent = "Update Entry";
-      document.getElementById("btnCancelMaal").style.display = "block";
-    }
-
-    function cancelEditMaal() {
-      document.getElementById("maalEditId").value = "";
-      document.getElementById("maalItem").value = "";
-      document.getElementById("maalAmount").value = "";
-      document.getElementById("maalSupplier").value = "";
-      document.getElementById("maalFormTitle").textContent = "📦 New Maal Aawam (Stock Inward)";
-      document.getElementById("btnSaveMaal").textContent = "Save Inward Entry";
-      document.getElementById("btnCancelMaal").style.display = "none";
-    }
-
-    function deleteMaalEntry(id) {
+    function deleteMaalItem(id) {
       if (confirm("Delete this Maal Inward record?")) {
-        appData.maal = appData.maal.filter(e => e.id !== id);
-        saveLocal();
+        appData.maal = appData.maal.filter(m => m.id !== id);
+        saveToStorage();
+        renderMaalList();
       }
     }
 
-    // UPDATE ITEM AUTOCOMPLETE LIST
-    function updateItemDatalist() {
-      const datalist = document.getElementById("itemListSuggestions");
-      datalist.innerHTML = "";
-      // Unique item names
-      const uniqueItems = [...new Set(appData.maal.map(m => m.item.trim()))];
-      uniqueItems.forEach(item => {
+    function updateMaalSuggestions() {
+      const dl = document.getElementById("maalSuggestions");
+      dl.innerHTML = "";
+      const unique = [...new Set(appData.maal.map(m => m.item.trim()))];
+      unique.forEach(itm => {
         const opt = document.createElement("option");
-        opt.value = item;
-        datalist.appendChild(opt);
+        opt.value = itm;
+        dl.appendChild(opt);
       });
     }
 
+    // ==========================================
     // RENDER FUNCTIONS
+    // ==========================================
     function renderAll() {
-      renderCustomerDirectory();
+      renderCustomerList();
       renderMaalList();
-      updateItemDatalist();
-      if (activeCustomerId) renderCustomerDetail();
+      updateMaalSuggestions();
+      if (activeCustId) renderCustomerLedgerView();
     }
 
-    function renderCustomerDirectory() {
-      const listContainer = document.getElementById("customerDirectoryList");
+    function renderCustomerList() {
+      const container = document.getElementById("customerFeed");
       const search = (document.getElementById("custSearch").value || "").toLowerCase();
-      listContainer.innerHTML = "";
+      container.innerHTML = "";
 
-      let marketTotalBaki = 0;
+      let totalLenaHai = 0;
+      let totalDenaHai = 0;
 
       const filtered = appData.customers.filter(c => {
-        let given = 0, received = 0;
+        let given = 0, got = 0;
         c.transactions.forEach(t => {
           if (t.type === "GIVEN") given += t.amount;
-          else received += t.amount;
+          else got += t.amount;
         });
-        c.balance = given - received;
-        if (c.balance > 0) marketTotalBaki += c.balance;
+        c.balance = given - got;
+
+        if (c.balance > 0) totalLenaHai += c.balance;
+        if (c.balance < 0) totalDenaHai += Math.abs(c.balance);
 
         return c.name.toLowerCase().includes(search) || (c.phone && c.phone.includes(search));
       });
 
-      document.getElementById("statNetBaki").textContent = "₹" + marketTotalBaki.toLocaleString();
-      document.getElementById("statCustCount").textContent = appData.customers.length;
+      document.getElementById("statTotalBaki").textContent = "₹" + totalLenaHai.toLocaleString();
+      document.getElementById("statTotalAdv").textContent = "₹" + totalDenaHai.toLocaleString();
 
       if (filtered.length === 0) {
-        listContainer.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Koi customer profile nahi mili.</div>`;
+        container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-sub); font-size: 0.85rem;">Koi customer nahi mila. Naya jodne ke liye <b>+ Add Grahak</b> dabayein.</div>`;
         return;
       }
 
       filtered.forEach(cust => {
+        const initials = cust.name.trim().charAt(0).toUpperCase();
+        const lastTx = cust.transactions[0];
+        const lastDate = lastTx ? new Date(lastTx.date).toLocaleDateString("en-IN", { day: 'numeric', month: 'short' }) : 'No Activity';
+
         const div = document.createElement("div");
-        div.className = "list-item";
-        div.onclick = () => openCustomerProfile(cust.id);
+        div.className = "cust-feed-item";
+        div.onclick = () => openCustomerLedger(cust.id);
+
+        let balClass = "settled";
+        let balText = "₹0";
+        let labelText = "Chutta";
+
+        if (cust.balance > 0) {
+          balClass = "due";
+          balText = "₹" + cust.balance.toLocaleString();
+          labelText = "Due (Lena Hai)";
+        } else if (cust.balance < 0) {
+          balClass = "adv";
+          balText = "₹" + Math.abs(cust.balance).toLocaleString();
+          labelText = "Advance (Dena Hai)";
+        }
 
         div.innerHTML = `
-          <div class="item-info">
-            <div class="item-primary">${cust.name}</div>
-            <div class="item-secondary">${cust.phone ? '📞 ' + cust.phone : 'No Phone'} | ${cust.transactions.length} Entries</div>
+          <div class="cust-avatar">${initials}</div>
+          <div class="cust-body">
+            <div class="cust-name">${cust.name}</div>
+            <div class="cust-subtext">${cust.phone ? '📞 ' + cust.phone + ' • ' : ''}${lastDate}</div>
           </div>
-          <div style="text-align:right; margin-right: 8px;">
-            <div style="font-weight:700; font-size:1rem; color:${cust.balance > 0 ? 'var(--accent-red)' : (cust.balance < 0 ? 'var(--accent-green)' : 'var(--text-muted)')}">
-              ${cust.balance > 0 ? '₹' + cust.balance.toLocaleString() + ' Baki' : (cust.balance < 0 ? '₹' + Math.abs(cust.balance).toLocaleString() + ' Adv' : '₹0')}
-            </div>
-          </div>
-          <div class="item-actions">
-            <button class="action-icon-btn del" onclick="deleteCustomerProfile('${cust.id}', event)">✕</button>
+          <div class="cust-amount-box">
+            <div class="cust-amount-val ${balClass}">${balText}</div>
+            <div class="cust-amount-label">${labelText}</div>
           </div>
         `;
-        listContainer.appendChild(div);
+        container.appendChild(div);
       });
     }
 
-    function renderCustomerDetail() {
-      const cust = appData.customers.find(c => c.id === activeCustomerId);
+    function renderCustomerLedgerView() {
+      const cust = appData.customers.find(c => c.id === activeCustId);
       if (!cust) return;
 
-      document.getElementById("profileName").textContent = cust.name;
-      document.getElementById("profilePhone").textContent = cust.phone ? "📞 " + cust.phone : "No Mobile Number";
+      document.getElementById("profileCustName").textContent = cust.name;
+      document.getElementById("profileCustPhone").textContent = cust.phone ? "📞 " + cust.phone : "No Phone Added";
 
-      let given = 0, received = 0;
+      let given = 0, got = 0;
       cust.transactions.forEach(t => {
         if (t.type === "GIVEN") given += t.amount;
-        else received += t.amount;
+        else got += t.amount;
       });
-      const balance = given - received;
+      const balance = given - got;
 
-      const balEl = document.getElementById("profileNetBalance");
+      const balNum = document.getElementById("profileCustBalance");
+      const balStatus = document.getElementById("profileCustStatus");
+
       if (balance > 0) {
-        balEl.textContent = `₹${balance.toLocaleString()} (Udhar / Baki)`;
-        balEl.style.color = "var(--accent-red)";
+        balNum.textContent = "₹" + balance.toLocaleString();
+        balNum.style.color = "var(--ok-red)";
+        balStatus.textContent = "Aapko Lena Hai (Due)";
       } else if (balance < 0) {
-        balEl.textContent = `₹${Math.abs(balance).toLocaleString()} (Advance)`;
-        balEl.style.color = "var(--accent-green)";
+        balNum.textContent = "₹" + Math.abs(balance).toLocaleString();
+        balNum.style.color = "var(--ok-green)";
+        balStatus.textContent = "Aapko Dena Hai (Advance)";
       } else {
-        balEl.textContent = "₹0 (Hisaab Chutta)";
-        balEl.style.color = "var(--text-muted)";
+        balNum.textContent = "₹0";
+        balNum.style.color = "var(--text-sub)";
+        balStatus.textContent = "Hisaab Barabar";
       }
 
-      const container = document.getElementById("profileTxList");
-      container.innerHTML = "";
+      const timeline = document.getElementById("ledgerTimelineList");
+      timeline.innerHTML = "";
 
       if (cust.transactions.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Koi hisaab entry nahi hai.</div>`;
+        timeline.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-sub); font-size: 0.85rem;">Abhi koi entry nahi hai. Niche diye buttons se entry karein.</div>`;
         return;
       }
 
@@ -1100,21 +1632,23 @@
         const dateStr = new Date(tx.date).toLocaleDateString("en-IN", { day: 'numeric', month: 'short', year: 'numeric' });
 
         const div = document.createElement("div");
-        div.className = "list-item";
-        div.style.cursor = "default";
+        div.className = "tx-row " + (isGiven ? "given" : "received");
+
         div.innerHTML = `
-          <div class="item-info">
-            <div class="item-primary" style="color: ${isGiven ? 'var(--accent-red)' : 'var(--accent-green)'}">
-              ${isGiven ? 'Given (Diya / Udhar)' : 'Received (Liya / Jama)'} - ₹${tx.amount.toLocaleString()}
-            </div>
-            <div class="item-secondary">${dateStr} ${tx.remarks ? ' | ' + tx.remarks : ''}</div>
+          <div class="tx-details">
+            <div class="tx-date">${dateStr}</div>
+            <div class="tx-note">${tx.remarks ? tx.remarks : (isGiven ? 'Maine Diye (Udhar)' : 'Maine Liye (Payment)')}</div>
           </div>
-          <div class="item-actions">
-            <button class="action-icon-btn edit" onclick="editTransaction('${tx.id}')">✏️</button>
-            <button class="action-icon-btn del" onclick="deleteTransaction('${tx.id}')">✕</button>
+          <div class="tx-amount-col">
+            <div class="tx-num ${isGiven ? 'red' : 'green'}">₹${tx.amount.toLocaleString()}</div>
+            <div class="tx-tag">${isGiven ? 'DIYE' : 'LIYE'}</div>
+          </div>
+          <div class="tx-ctrls">
+            <button class="btn-mini" onclick="openTxModal('${tx.type}', '${tx.id}')">✏️</button>
+            <button class="btn-mini" style="color:var(--ok-red);" onclick="deleteLedgerEntry('${tx.id}')">✕</button>
           </div>
         `;
-        container.appendChild(div);
+        timeline.appendChild(div);
       });
     }
 
@@ -1123,52 +1657,53 @@
       const search = (document.getElementById("maalSearch").value || "").toLowerCase();
       container.innerHTML = "";
 
-      let totalCost = 0;
+      let total = 0;
       const filtered = appData.maal.filter(m => {
-        totalCost += m.amount;
+        total += m.amount;
         return m.item.toLowerCase().includes(search) || m.supplier.toLowerCase().includes(search);
       });
 
-      document.getElementById("statTotalStock").textContent = "₹" + totalCost.toLocaleString();
-      document.getElementById("statStockCount").textContent = appData.maal.length;
+      document.getElementById("statMaalTotalCost").textContent = "₹" + total.toLocaleString();
+      document.getElementById("statMaalEntries").textContent = appData.maal.length;
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Koi Maal entry nahi mili.</div>`;
+        container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-sub); font-size: 0.85rem;">Koi Maal Inward record nahi mila.</div>`;
         return;
       }
 
-      filtered.forEach(entry => {
-        const dt = new Date(entry.dateTime);
+      filtered.forEach(m => {
+        const dt = new Date(m.dateTime);
         const dateStr = dt.toLocaleDateString("en-IN", { day: 'numeric', month: 'short' }) + " " + dt.toLocaleTimeString("en-IN", { hour: '2-digit', minute: '2-digit' });
 
         const div = document.createElement("div");
-        div.className = "list-item";
-        div.style.cursor = "default";
+        div.className = "maal-item-card";
+
         div.innerHTML = `
-          <div class="item-info">
-            <div class="item-primary">${entry.item}</div>
-            <div class="item-secondary">Kisse: <strong>${entry.supplier}</strong> | Kab: ${dateStr}</div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-weight:700; font-size:0.95rem;">${m.item}</div>
+            <div style="font-size:0.72rem; color:var(--text-sub); margin-top:2px;">Kisse: <strong>${m.supplier}</strong> • Kab: ${dateStr}</div>
           </div>
-          <div style="font-weight:700; font-size:0.95rem; color:var(--accent-blue); margin-right:8px;">
-            ₹${entry.amount.toLocaleString()}
+          <div style="text-align:right; margin-right:12px;">
+            <div style="font-weight:800; font-size:1.05rem; color:var(--ok-blue);">₹${m.amount.toLocaleString()}</div>
           </div>
-          <div class="item-actions">
-            <button class="action-icon-btn edit" title="Edit" onclick="editMaal('${entry.id}')">✏️</button>
-            <button class="action-icon-btn del" title="Delete" onclick="deleteMaalEntry('${entry.id}')">✕</button>
+          <div style="display:flex; gap:4px;">
+            <button class="btn-mini" onclick="openMaalModal('${m.id}')">✏️</button>
+            <button class="btn-mini" style="color:var(--ok-red);" onclick="deleteMaalItem('${m.id}')">✕</button>
           </div>
         `;
         container.appendChild(div);
       });
     }
 
-    function exportDataJson() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-      const downloadAnchor = document.createElement("a");
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `sunny_stores_backup_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
+    // JSON Backup Download
+    function downloadBackup() {
+      const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+      const a = document.createElement("a");
+      a.setAttribute("href", str);
+      a.setAttribute("download", `sunny_stores_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     }
   </script>
 </body>
